@@ -1,5 +1,5 @@
 displayName: Spark
-description: Stack of applications that collect metrics and provides visualization and alerting capabilities. Includes Prometheus, Prometheus Alertmanager and Grafana.
+description: Apache Spark is a fast and general-purpose cluster computing system for big data
 category:
   - compute
   - bigdata
