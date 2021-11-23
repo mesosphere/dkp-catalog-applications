@@ -1,0 +1,12 @@
+displayName: Spark
+description: Stack of applications that collect metrics and provides visualization and alerting capabilities. Includes Prometheus, Prometheus Alertmanager and Grafana.
+category:
+  - compute
+  - bigdata
+overview: >
+  # Overview
+  Apache Spark is a fast and general-purpose cluster computing system for big data. It provides high-level APIs in Scala, Java, Python, and R, and an optimized engine that supports general computation graphs for data analysis. It also supports a rich set of higher-level tools including: Spark SQL for SQL and DataFrames, MLlib for machine learning, GraphX for graph processing, and Spark Streaming for stream processing.
+
+  - [Spark Documentation](https://spark.apache.org/docs/latest/)
+icon: 
+https://raw.githubusercontent.com/mesosphere/kubeaddons-enterprise/dev/metadata/static/spark/logo.svg
