@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
   - spark-operator.yaml
   - ../../../helm-repositories/mesosphere-spark-repo
-  
