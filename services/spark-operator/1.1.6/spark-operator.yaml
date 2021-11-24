@@ -23,5 +23,5 @@ spec:
   releaseName: spark-operator
   valuesFrom:
     - kind: ConfigMap
-      name: spark-operator-1.2.3-d2iq-defaults
+      name: spark-operator-1.1.6-d2iq-defaults
   targetNamespace: ${releaseNamespace}
