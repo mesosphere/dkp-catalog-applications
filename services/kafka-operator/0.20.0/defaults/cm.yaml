@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-operator-0.20.0-d2iq-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    crd:
+      enabled: true
