@@ -5,4 +5,17 @@ metadata:
   name: spark-operator-1.1.6-d2iq-defaults
   namespace: ${releaseNamespace}
 data:
-  values.yaml: ""
+  values.yaml: |-
+    historyServer:
+      enabled: true
+    uiService:
+      enable: true
+    metrics:
+      enable: false
+    podMonitor:
+      # -- If enabled, a pod monitor for operator's pod will be submitted. Note that prometheus metrics should be enabled as well.
+      enable: false
+    batchScheduler:
+      enable: false
+    istio:
+      enabled: false
