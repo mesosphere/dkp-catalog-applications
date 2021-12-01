@@ -1,8 +1,7 @@
 displayName: Kafka Operator
 description: Koperator is an operator for managing Apache Kafka on Kubernetes that automates the provisioning, management, and autoscaling of Apache Kafka clusters deployed to K8s.
 category:
-  - streaming
-  - messaging
+  - Data Services
 overview: |-
   # Overview
   Apache Kafka is an open-source distributed streaming platform. The Kafka Operator (Koperator) is an operator for managing Apache Kafka on Kubernetes that automates the provisioning, management, and autoscaling of Apache Kafka clusters deployed to K8s.
