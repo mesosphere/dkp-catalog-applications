@@ -3,6 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: mesosphere.github.io-spark-charts
+  namespace: ${WORKSPACE_NAMESPACE}
 spec:
   url: http://mesosphere.github.io/spark-on-k8s-operator
   interval: 10m
