@@ -6,6 +6,15 @@ metadata:
   namespace: ${releaseNamespace}
 data:
   values.yaml: |-
+    serviceAccounts:
+      spark:
+        name: "spark-service-account"
+      sparkoperator:
+        name: "spark-operator-service-account"
+    replicaCount: 1
+    # by default, leaderElection is disabled and will only enabled when replicaCount > 1
+    leaderElection:
+      lockNamespace: ${releaseNamespace}
     historyServer:
       enabled: false
     uiService:
