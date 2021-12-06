@@ -1,1 +1,1 @@
-# dkp-catalog-applications
+# dkp-workspace-catalog-applications
