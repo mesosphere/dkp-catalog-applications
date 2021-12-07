@@ -5,4 +5,26 @@ metadata:
   name: spark-operator-1.1.6-d2iq-defaults
   namespace: ${releaseNamespace}
 data:
-  values.yaml: ""
+  values.yaml: |-
+    serviceAccounts:
+      spark:
+        name: "spark-service-account"
+      sparkoperator:
+        name: "spark-operator-service-account"
+    replicaCount: 1
+    # by default, leaderElection is disabled and will only enabled when replicaCount > 1
+    leaderElection:
+      lockNamespace: ${releaseNamespace}
+    historyServer:
+      enabled: false
+    uiService:
+      enable: true
+    metrics:
+      enable: false
+    podMonitor:
+      # -- If enabled, a pod monitor for operator's pod will be submitted. Note that prometheus metrics should be enabled as well.
+      enable: false
+    batchScheduler:
+      enable: false
+    istio:
+      enabled: false
