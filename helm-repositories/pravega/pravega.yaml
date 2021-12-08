@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: charts.pravega.io
+  namespace: ${workspaceNamespace}
+spec:
+  url: https://charts.pravega.io
+  interval: 10m
