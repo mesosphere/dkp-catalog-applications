@@ -5,5 +5,5 @@ metadata:
   name: kubernetes-charts.banzaicloud.com
   namespace: ${workspaceNamespace}
 spec:
-  url: https://kubernetes-charts.banzaicloud.com
+  url: "${helmMirrorURL:=https://kubernetes-charts.banzaicloud.com}"
   interval: 10m

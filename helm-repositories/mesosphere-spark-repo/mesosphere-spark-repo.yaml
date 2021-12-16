@@ -5,5 +5,5 @@ metadata:
   name: mesosphere.github.io-spark-charts
   namespace: ${workspaceNamespace}
 spec:
-  url: http://mesosphere.github.io/spark-on-k8s-operator
+  url: "${helmMirrorURL:=http://mesosphere.github.io/spark-on-k8s-operator}"
   interval: 10m
