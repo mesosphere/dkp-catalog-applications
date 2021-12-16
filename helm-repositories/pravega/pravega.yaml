@@ -5,5 +5,5 @@ metadata:
   name: charts.pravega.io
   namespace: ${workspaceNamespace}
 spec:
-  url: https://charts.pravega.io
+  url: "${helmMirrorURL:=https://charts.pravega.io}"
   interval: 10m
