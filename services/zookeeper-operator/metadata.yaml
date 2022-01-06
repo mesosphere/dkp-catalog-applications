@@ -10,6 +10,8 @@ overview: |-
 
   The ZooKeeper operator deploys Zookeeper 3.6.3 clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
 
+  **Note: Only install the ZooKeeper operator once per workspace.**
+
   ## More Information
   - [ZooKeeper Operator Documentation](https://github.com/pravega/zookeeper-operator)
   - [ZooKeeper Documentation](https://zookeeper.apache.org/)
