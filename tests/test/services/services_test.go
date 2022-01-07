@@ -1,0 +1,55 @@
+package services_test
+
+import (
+	"fmt"
+	"path"
+
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
+	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
+)
+
+const (
+	ServicesDirectory    = "../../../services"
+	DefaultDirectoryName = "defaults"
+	MetadataFileName     = "metadata.yaml"
+)
+
+var _ = Describe("Services", func() {
+	// For each service the directory structure should be:
+	// services/kafka-operator
+	// ├── 0.20.0
+	// │   ├── defaults
+	// │   │   ├── cm.yaml
+	// │   │   └── kustomization.yaml
+	// │   ├── kafka-operator.yaml
+	// │   └── kustomization.yaml
+	// └── metadata.yaml
+	Context("directory structure", func() {
+		// Get services names from services dir
+		services, err := files.ListDirectories(ServicesDirectory)
+		Expect(err).ShouldNot(HaveOccurred())
+		Expect(len(services)).To(BeNumerically(">", 0))
+
+		// Get service versions from list of services
+		serviceVersions, err := files.GetSubdirectoryMap(ServicesDirectory)
+		Expect(err).ShouldNot(HaveOccurred())
+
+		// Validate each services file structure
+		for service, versionList := range serviceVersions {
+			It(fmt.Sprintf("%s should have the proper file structure", service), func() {
+				// Validate metadata.yaml exists
+				Expect(path.Join(ServicesDirectory, service, MetadataFileName)).To(BeAnExistingFile())
+			})
+			for _, version := range versionList {
+				versionPath := path.Join(ServicesDirectory, service, version)
+				It(fmt.Sprintf("version %s of %s should have the proper file structure", version, service), func() {
+					Expect(err).ShouldNot(HaveOccurred())
+					// Validate "defaults" directory exists
+					Expect(path.Join(versionPath, DefaultDirectoryName)).To(BeADirectory())
+				})
+			}
+		}
+	})
+})
