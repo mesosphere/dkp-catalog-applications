@@ -6,11 +6,16 @@ REPO_ROOT := $(CURDIR)
 
 INTERACTIVE := $(shell [ -t 0 ] && echo 1)
 
+export GITHUB_ORG ?= mesosphere
+export GITHUB_REPOSITORY ?= dkp-catalog-applications
+
 ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
 else
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/repo-infra/.pre-commit-config.yaml
 endif
+
+include make/ci.mk
 
 .PHONY: clean
 clean: ## remove files created during build
