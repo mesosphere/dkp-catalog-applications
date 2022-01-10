@@ -33,16 +33,16 @@ test: ## go test with race detector and code coverage
 test: install-tools
 	$(call print-target)
 	cd tests && gotestsum \
-				--junitfile junit-report.xml \
-				--junitfile-testsuite-name=relative \
-				--junitfile-testcase-classname=short \
-				-- \
-				-covermode=atomic \
-				-coverprofile=coverage.out \
-				-race \
-				-short \
-				-v \
-				./...
+			--junitfile junit-report.xml \
+			--junitfile-testsuite-name=relative \
+			--junitfile-testcase-classname=short \
+			-- \
+			-covermode=atomic \
+			-coverprofile=coverage.out \
+			-race \
+			-short \
+			-v \
+			./...
 	cd tests && go tool cover -html=coverage.out -o coverage.html
 
 .PHONY: mod-tidy
