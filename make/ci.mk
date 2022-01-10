@@ -7,6 +7,7 @@ CI_DOCKER_TAG ?= $(shell (cat $(CI_DOCKERFILE) $(CI_DOCKER_EXTRA_FILES) \
 CI_DOCKER_IMG ?= $(GITHUB_ORG)/$(GITHUB_REPOSITORY)-ci:$(CI_DOCKER_TAG)
 
 export GOLANG_VERSION ?= 1.17.0
+DOCKER_VERSION ?= 20.10.7
 
 .PHONY: dockerauth
 dockerauth:
@@ -29,6 +30,7 @@ ci.docker.build: ## Builds the CI Docker image
 ci.docker.build: dockerauth ; $(info $(M) Building CI Docker image)
 	DOCKER_BUILDKIT=1 docker build \
 		--tag $(CI_DOCKER_IMG) \
+		--build-arg DOCKER_VERSION=$(DOCKER_VERSION) \
 		--build-arg GOLANG_VERSION=$(GOLANG_VERSION) \
 		$(if $(CI_DOCKER_BUILD_ARGS),$(addprefix --build-arg ,$(CI_DOCKER_BUILD_ARGS))) \
 		-f $(CI_DOCKERFILE) .
