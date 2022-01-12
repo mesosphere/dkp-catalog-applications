@@ -58,7 +58,7 @@ go-clean: ## go clean build, test and modules caches
 
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files
-pre-commit: ; $(info $(M) running pre-commit)
+pre-commit: install-tools; $(info $(M) running pre-commit)
 ifeq ($(wildcard $(PRE_COMMIT_CONFIG_FILE)),)
 	$(error Cannot find pre-commit config file $(PRE_COMMIT_CONFIG_FILE). Specify the config file via PRE_COMMIT_CONFIG_FILE variable)
 endif
