@@ -51,12 +51,6 @@ mod-tidy: ## go mod tidy
 	cd tests && go mod tidy
 	cd tools && go mod tidy
 
-.PHONY: diff
-diff: ## git diff
-	$(call print-target)
-	git diff --exit-code
-	RES=$$(git status --porcelain) ; if [ -n "$$RES" ]; then echo $$RES && exit 1 ; fi
-
 .PHONY: go-clean
 go-clean: ## go clean build, test and modules caches
 	$(call print-target)
