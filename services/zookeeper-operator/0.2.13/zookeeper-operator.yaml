@@ -11,6 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: charts.pravega.io
+        namespace: ${workspaceNamespace}
       version: 0.2.13
   interval: 15s
   install:

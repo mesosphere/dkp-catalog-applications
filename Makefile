@@ -2,12 +2,12 @@
 
 SHELL := /bin/bash -euo pipefail
 
-REPO_ROOT := $(CURDIR)
-
 INTERACTIVE := $(shell [ -t 0 ] && echo 1)
 
-export GITHUB_ORG ?= mesosphere
-export GITHUB_REPOSITORY ?= dkp-catalog-applications
+KOMMANDER_CLI_VERSION ?= $(shell (gh release list -L 1 -R mesosphere/kommander-cli | cut -d$$'\t' -f1))
+KOMMANDER_CLI_BIN = bin/$(GOOS)/$(GOARCH)/kommander
+GOARCH ?= $(shell go env GOARCH)
+GOOS ?= $(shell go env GOOS)
 
 ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
@@ -15,6 +15,9 @@ else
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/repo-infra/.pre-commit-config.yaml
 endif
 
+include make/release.mk
+include make/repo.mk
+include make/tools.mk
 include make/ci.mk
 
 .PHONY: clean
@@ -22,20 +25,25 @@ clean: ## remove files created during build
 	$(call print-target)
 	cd tests && rm -f coverage.*
 
-.PHONY: install-tools
-install-tools: ## go install tools
-	$(call print-target)
-	cd tools && go install -v $(shell cd tools && go list -f '{{ join .Imports " " }}' -tags=tools)
+.PHONY: kommander
+kommander: $(KOMMANDER_CLI_BIN)
+
+.PHONY: $(KOMMANDER_CLI_BIN)
+$(KOMMANDER_CLI_BIN):
+	mkdir -p $(dir $@) _install
+	curl -fsSL https://s3.amazonaws.com/downloads.mesosphere.io/dkp/kommander_$(KOMMANDER_CLI_VERSION)_$(GOOS)_$(GOARCH).tar.gz | tar xz -C _install 'kommander'
+	mv _install/kommander $@
+	rm -rf _install
 
 .PHONY: lint
 lint: ## golangci-lint
-lint: install-tools
+lint: install-tools.go
 	$(call print-target)
 	cd tests && golangci-lint run -c ${REPO_ROOT}/.golangci.yml --fix
 
 .PHONY: test
 test: ## go test with race detector and code coverage
-test: install-tools
+test: install-tools.go
 	$(call print-target)
 	cd tests && gotestsum \
 			--junitfile junit-report.xml \

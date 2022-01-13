@@ -8,6 +8,7 @@ CI_DOCKER_IMG ?= $(GITHUB_ORG)/$(GITHUB_REPOSITORY)-ci:$(CI_DOCKER_TAG)
 
 export GOLANG_VERSION ?= 1.17.0
 DOCKER_VERSION ?= 20.10.7
+ASDF_VERSION=0.8.1
 
 .PHONY: dockerauth
 dockerauth:
@@ -32,6 +33,7 @@ ci.docker.build: dockerauth ; $(info $(M) Building CI Docker image)
 		--tag $(CI_DOCKER_IMG) \
 		--build-arg DOCKER_VERSION=$(DOCKER_VERSION) \
 		--build-arg GOLANG_VERSION=$(GOLANG_VERSION) \
+		--build-arg ASDF_VERSION=$(ASDF_VERSION) \
 		$(if $(CI_DOCKER_BUILD_ARGS),$(addprefix --build-arg ,$(CI_DOCKER_BUILD_ARGS))) \
 		-f $(CI_DOCKERFILE) .
 
@@ -55,6 +57,6 @@ ci.docker.run: ci.docker.ensure ; $(info $(M) Runs the build in the CI Docker im
 		$(if $(GITHUB_USER_TOKEN),-e GITHUB_USER_TOKEN=$(GITHUB_USER_TOKEN) -e GITHUB_TOKEN=$(GITHUB_USER_TOKEN),$(if $(GITHUB_TOKEN),-e GITHUB_TOKEN=$(GITHUB_TOKEN))) \
 		--net=host \
 		$(CI_DOCKER_IMG) \
-		$(if $(RUN_WHAT),bash -ec "$(RUN_WHAT)")
+		$(if $(RUN_WHAT),bash -ec ". ~/.asdf/asdf.sh && $(RUN_WHAT)")
 
 endif

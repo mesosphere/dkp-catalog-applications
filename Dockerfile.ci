@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip3 install --upgrade pre-commit yamale yamllint awscli gitlint
 
+ARG ASDF_VERSION
+RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v${ASDF_VERSION}
+RUN echo ". ${HOME}/.asdf/asdf.sh" >> ${HOME}/.bashrc
+
 ARG DOCKER_VERSION
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | \
     tar xz -C /usr/local/bin --strip-components=1 docker/docker
