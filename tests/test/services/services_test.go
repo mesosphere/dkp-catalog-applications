@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 
+	sourcev1 "github.com/fluxcd/source-controller/api/v1beta1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
@@ -12,6 +13,7 @@ import (
 
 const (
 	ServicesDirectory    = "../../../services"
+	HelmRepoDirectory    = "../../../helm-repositories"
 	DefaultDirectoryName = "defaults"
 	MetadataFileName     = "metadata.yaml"
 )
@@ -50,6 +52,32 @@ var _ = Describe("Services", func() {
 					Expect(path.Join(versionPath, DefaultDirectoryName)).To(BeADirectory())
 				})
 			}
+		}
+	})
+
+	Context("helmrepositories", func() {
+		// Get HelmRepository name/urls map
+		helmRepos := make(map[string]string)
+		err := files.GetHelmRepoURLs(HelmRepoDirectory, helmRepos)
+		Expect(err).ShouldNot(HaveOccurred())
+
+		// Get list of all helm releases
+		helmReleases, err := files.ListHelmReleases(ServicesDirectory)
+		Expect(err).ShouldNot(HaveOccurred())
+
+		Expect(len(helmReleases)).To(BeNumerically(">", 0))
+		// Validate each HelmRelease references an existing HelmRepository
+		for _, helmRelease := range helmReleases {
+			helmRelease := helmRelease
+			It(fmt.Sprintf("the %s HelmRelease should reference a HelmRepository that exists in this repository", helmRelease.Name), func() {
+				if helmRelease.Spec.Chart.Spec.SourceRef.Kind == sourcev1.HelmRepositoryKind {
+					_, ok := helmRepos[helmRelease.Spec.Chart.Spec.SourceRef.Name]
+					// if ok is true, the helm repo referenced in the helm release exists
+					Expect(ok).To(BeTrue(),
+						fmt.Sprintf("the %s HelmRelease references a HelmRepository (%s) that doesn't exist in the %s directory",
+							helmRelease.Name, helmRelease.Spec.Chart.Spec.SourceRef.Name, HelmRepoDirectory))
+				}
+			})
 		}
 	})
 })

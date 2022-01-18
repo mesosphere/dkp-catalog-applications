@@ -3,7 +3,14 @@ package files
 import (
 	"os"
 	"path"
+	"path/filepath"
+
+	v2 "github.com/fluxcd/helm-controller/api/v2beta1"
+	sourcev1 "github.com/fluxcd/source-controller/api/v1beta1"
+	"sigs.k8s.io/yaml"
 )
+
+const YamlFileExt = ".yaml"
 
 // ListDirectories returns the name of directories that are within the input directory (not recursive).
 func ListDirectories(directory string) ([]string, error) {
@@ -46,4 +53,56 @@ func GetSubdirectoryMap(topLevelDirectory string) (map[string][]string, error) {
 		directoryMap[directory] = subDirectories
 	}
 	return directoryMap, nil
+}
+
+// GetHelmRepoURLs returns a map of HelmRepository names to url.
+func GetHelmRepoURLs(
+	dir string,
+	helmRepos map[string]string,
+) error {
+	err := filepath.Walk(dir,
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if filepath.Ext(info.Name()) == YamlFileExt {
+				bytes, _ := os.ReadFile(path)
+				helmRepo := &sourcev1.HelmRepository{}
+				err = yaml.Unmarshal(bytes, helmRepo)
+				if err != nil {
+					return err
+				}
+				if helmRepo.Kind == sourcev1.HelmRepositoryKind {
+					helmRepos[helmRepo.Name] = helmRepo.Spec.URL
+				}
+			}
+			return nil
+		})
+	return err
+}
+
+// ListHelmReleases returns a slice of all HelmReleases in the path.
+func ListHelmReleases(dir string) ([]v2.HelmRelease, error) {
+	var helmReleases []v2.HelmRelease
+
+	err := filepath.Walk(dir,
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if filepath.Ext(info.Name()) == YamlFileExt {
+				bytes, _ := os.ReadFile(path)
+				helmRelease := &v2.HelmRelease{}
+				err = yaml.Unmarshal(bytes, helmRelease)
+				if err != nil {
+					return err
+				}
+				if helmRelease.Kind == v2.HelmReleaseKind {
+					helmReleases = append(helmReleases, *helmRelease)
+				}
+			}
+			return nil
+		})
+
+	return helmReleases, err
 }

@@ -10,6 +10,8 @@ import (
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
 
+const testDataDir = "./testdata/"
+
 var _ = Describe("Files", func() {
 	It("can list directories", func() {
 		topDir, err := os.MkdirTemp("", "")
@@ -58,5 +60,30 @@ var _ = Describe("Files", func() {
 		subDirMap, err := files.GetSubdirectoryMap("foo")
 		Expect(err).Should(HaveOccurred())
 		Expect(subDirMap).Should(BeEmpty())
+	})
+
+	It("can list HelmReleases", func() {
+		helmReleases, err := files.ListHelmReleases(testDataDir)
+		Expect(err).ShouldNot(HaveOccurred())
+
+		Expect(len(helmReleases)).To(BeNumerically(">", 0))
+	})
+
+	It("cannot list HelmReleases", func() {
+		_, err := files.ListHelmReleases("./foo/bar")
+		Expect(err).Should(HaveOccurred())
+	})
+
+	It("can get HelmRepositories", func() {
+		helmRepos := make(map[string]string)
+		err := files.GetHelmRepoURLs(testDataDir, helmRepos)
+		Expect(err).ShouldNot(HaveOccurred())
+		Expect(len(helmRepos)).To(BeNumerically(">", 0))
+	})
+
+	It("cannot get HelmRepositories", func() {
+		helmRepos := make(map[string]string)
+		err := files.GetHelmRepoURLs("./foo/bar/", helmRepos)
+		Expect(err).Should(HaveOccurred())
 	})
 })
