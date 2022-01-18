@@ -9,16 +9,14 @@ KOMMANDER_CLI_BIN = bin/$(GOOS)/$(GOARCH)/kommander
 GOARCH ?= $(shell go env GOARCH)
 GOOS ?= $(shell go env GOOS)
 
-ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
-	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
-else
-	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/repo-infra/.pre-commit-config.yaml
-endif
-
-include make/release.mk
 include make/repo.mk
+include make/release.mk
 include make/tools.mk
 include make/ci.mk
+
+ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
+	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
+endif
 
 .PHONY: clean
 clean: ## remove files created during build
