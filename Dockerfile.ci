@@ -23,6 +23,9 @@ ARG DOCKER_VERSION
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | \
     tar xz -C /usr/local/bin --strip-components=1 docker/docker
 
+ARG GH_VERSION
+RUN curl -Lf https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/ --strip-components 2 gh_${GH_VERSION}_linux_amd64/bin/gh
+
 RUN --mount=type=bind,target=/tmp/dkp-catalog-applications,readwrite=true \
     cd /tmp/dkp-catalog-applications && \
     bash -ec ". ~/.asdf/asdf.sh && make install-tools" && \
