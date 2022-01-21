@@ -11,6 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: mesosphere.github.io-spark-charts
+        namespace: ${workspaceNamespace}
       version: 1.1.6
   interval: 15s
   install:
