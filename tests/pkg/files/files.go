@@ -5,8 +5,8 @@ import (
 	"path"
 	"path/filepath"
 
-	v2 "github.com/fluxcd/helm-controller/api/v2beta1"
-	sourcev1 "github.com/fluxcd/source-controller/api/v1beta1"
+	helmcontrollerv2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
+	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
 	"sigs.k8s.io/yaml"
 )
 
@@ -67,12 +67,12 @@ func GetHelmRepoURLs(
 			}
 			if filepath.Ext(info.Name()) == YamlFileExt {
 				bytes, _ := os.ReadFile(path)
-				helmRepo := &sourcev1.HelmRepository{}
+				helmRepo := &sourcecontrollerv1beta1.HelmRepository{}
 				err = yaml.Unmarshal(bytes, helmRepo)
 				if err != nil {
 					return err
 				}
-				if helmRepo.Kind == sourcev1.HelmRepositoryKind {
+				if helmRepo.Kind == sourcecontrollerv1beta1.HelmRepositoryKind {
 					helmRepos[helmRepo.Name] = helmRepo.Spec.URL
 				}
 			}
@@ -82,8 +82,8 @@ func GetHelmRepoURLs(
 }
 
 // ListHelmReleases returns a slice of all HelmReleases in the path.
-func ListHelmReleases(dir string) ([]v2.HelmRelease, error) {
-	var helmReleases []v2.HelmRelease
+func ListHelmReleases(dir string) ([]helmcontrollerv2beta1.HelmRelease, error) {
+	var helmReleases []helmcontrollerv2beta1.HelmRelease
 
 	err := filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
@@ -92,12 +92,12 @@ func ListHelmReleases(dir string) ([]v2.HelmRelease, error) {
 			}
 			if filepath.Ext(info.Name()) == YamlFileExt {
 				bytes, _ := os.ReadFile(path)
-				helmRelease := &v2.HelmRelease{}
+				helmRelease := &helmcontrollerv2beta1.HelmRelease{}
 				err = yaml.Unmarshal(bytes, helmRelease)
 				if err != nil {
 					return err
 				}
-				if helmRelease.Kind == v2.HelmReleaseKind {
+				if helmRelease.Kind == helmcontrollerv2beta1.HelmReleaseKind {
 					helmReleases = append(helmReleases, *helmRelease)
 				}
 			}
