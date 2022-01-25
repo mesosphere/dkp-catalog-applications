@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/fluxcd/helm-controller/api v0.15.0
 	github.com/fluxcd/source-controller/api v0.20.1
-	github.com/onsi/ginkgo/v2 v2.0.0
+	github.com/onsi/ginkgo/v2 v2.1.0
 	github.com/onsi/gomega v1.17.0
 	sigs.k8s.io/yaml v1.3.0
 )
