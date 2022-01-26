@@ -1,9 +1,0 @@
----
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: foo
-  namespace: bar
-spec:
-  url: https://foobar.com
-  interval: 10m
