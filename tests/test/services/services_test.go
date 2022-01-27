@@ -9,16 +9,16 @@ import (
 
 	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
 	// kustomizebuild "sigs.k8s.io/kustomize/api/krusty"
-	// "sigs.k8s.io/kustomize/kyaml/filesys"
+	// "sigs.k8s.io/kustomize/kyaml/filesys".
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
 
 const (
-	ConfigMapKind = "ConfigMap"
-	ServicesDirectory    = "../../../services"
-	HelmRepoDirectory    = "../../../helm-repositories"
-	DefaultDirectoryName = "defaults"
-	MetadataFileName     = "metadata.yaml"
+	ConfigMapKind            = "ConfigMap"
+	ServicesDirectory        = "../../../services"
+	HelmRepoDirectory        = "../../../helm-repositories"
+	DefaultDirectoryName     = "defaults"
+	MetadataFileName         = "metadata.yaml"
 	DefaultConfigMapFileName = "cm.yaml"
 )
 
@@ -36,11 +36,12 @@ var _ = Describe("Services", func() {
 	var services []string
 
 	BeforeEach(func() {
+		var err error
 		// Get services names from services dir
-		services, err := files.ListDirectories(ServicesDirectory)
+		services, err = files.ListDirectories(ServicesDirectory)
 		Expect(err).ShouldNot(HaveOccurred())
 		Expect(len(services)).To(BeNumerically(">", 0))
-	})	
+	})
 
 	Context("directory structure", func() {
 		// Get service versions from list of services
@@ -102,7 +103,7 @@ var _ = Describe("Services", func() {
 						helmRelease.Name, helmRelease.Spec.Chart.Spec.SourceRef.Name, HelmRepoDirectory))
 			})
 
-			It("should reference a ConfigMap that exists in default directory", func () {
+			It("should reference a ConfigMap that exists in default directory", func() {
 				configMapRefs := helmRelease.Spec.ValuesFrom
 				chartVer := helmRelease.Spec.Chart.Spec.Version
 				Expect(len(helmRelease.Spec.ValuesFrom)).To(BeNumerically(">", 0))
@@ -134,11 +135,11 @@ var _ = Describe("Services", func() {
 			It("should have non-empty displayName", func() {
 				Expect(len(metadata.DisplayName)).To(BeNumerically(">", 0))
 			})
-			
+
 			It("should have non-empty description", func() {
 				Expect(len(metadata.Description)).To(BeNumerically(">", 0))
 			})
-			
+
 			It("should have non-empty category", func() {
 				Expect(len(metadata.Category)).To(BeNumerically(">", 0))
 			})
@@ -149,14 +150,14 @@ var _ = Describe("Services", func() {
 					Expect(sc).To(BeElementOf("workspace", "project"))
 				}
 			})
-			
-			It ("should have non-empty overview", func() {
+
+			It("should have non-empty overview", func() {
 				Expect(len(metadata.Overview)).To(BeNumerically(">", 0))
 			})
-			
-			It ("should have non-empty icon", func() {
+
+			It("should have non-empty icon", func() {
 				Expect(len(metadata.Icon)).To(BeNumerically(">", 0))
-			})	
+			})
 		}
 	})
 })

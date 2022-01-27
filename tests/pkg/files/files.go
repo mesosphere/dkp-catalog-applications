@@ -28,7 +28,7 @@ func GetAppMetadataFromFile(mdFilePath string) (*AppMetadata, error) {
 		return nil, err
 	}
 	metaData := &AppMetadata{}
-	if err = yaml.Unmarshal(bytes, metaData); err != nil {
+	if err := yaml.Unmarshal(bytes, metaData); err != nil {
 		return nil, err
 	}
 	return metaData, nil
@@ -40,7 +40,7 @@ func GetConfigMapObjectFromFile(configMapPath string) (*corev1.ConfigMap, error)
 		return nil, err
 	}
 	configMap := &corev1.ConfigMap{}
-	if err = yaml.Unmarshal(bytes, configMap); err != nil {
+	if err := yaml.Unmarshal(bytes, configMap); err != nil {
 		return nil, err
 	}
 	return configMap, nil
