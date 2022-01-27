@@ -7,6 +7,7 @@ import (
 
 	helmcontrollerv2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
 	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
+	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/yaml"
 )
 
@@ -21,7 +22,7 @@ type AppMetadata struct {
 	Icon        string   `yaml:"icon"`
 }
 
-func GetAppMetadata(mdFilePath string) (*AppMetadata, error) {
+func GetAppMetadataFromFile(mdFilePath string) (*AppMetadata, error) {
 	bytes, err := os.ReadFile(mdFilePath)
 	if err != nil {
 		return nil, err
@@ -31,6 +32,18 @@ func GetAppMetadata(mdFilePath string) (*AppMetadata, error) {
 		return nil, err
 	}
 	return metaData, nil
+}
+
+func GetConfigMapObjectFromFile(configMapPath string) (*corev1.ConfigMap, error) {
+	bytes, err := os.ReadFile(configMapPath)
+	if err != nil {
+		return nil, err
+	}
+	configMap := &corev1.ConfigMap{}
+	if err = yaml.Unmarshal(bytes, configMap); err != nil {
+		return nil, err
+	}
+	return configMap, nil
 }
 
 // ListDirectories returns the name of directories that are within the input directory (not recursive).

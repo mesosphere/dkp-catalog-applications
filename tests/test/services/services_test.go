@@ -13,10 +13,12 @@ import (
 )
 
 const (
+	ConfigMapKind = "ConfigMap"
 	ServicesDirectory    = "../../../services"
 	HelmRepoDirectory    = "../../../helm-repositories"
 	DefaultDirectoryName = "defaults"
 	MetadataFileName     = "metadata.yaml"
+	DefaultConfigMapFileName = "cm.yaml"
 )
 
 var _ = Describe("Services", func() {
@@ -61,7 +63,7 @@ var _ = Describe("Services", func() {
 		}
 	})
 
-	Context("helmrepositories", func() {
+	Context("helmreleases", func() {
 		// Get HelmRepository name/urls map
 		helmRepos := make(map[string]string)
 		err := files.GetHelmRepoURLs(HelmRepoDirectory, helmRepos)
@@ -81,40 +83,63 @@ var _ = Describe("Services", func() {
 					fmt.Sprintf("the %s HelmRelease references a HelmRepository (%s) that doesn't exist in the %s directory",
 						helmRelease.Name, helmRelease.Spec.Chart.Spec.SourceRef.Name, HelmRepoDirectory))
 			})
+
+			It("should reference a ConfigMap that exists in default directory", func () {
+				configMapRefs := helmRelease.Spec.ValuesFrom
+				chartVer := helmRelease.Spec.Chart.Spec.Version
+				Expect(len(helmRelease.Spec.ValuesFrom)).To(BeNumerically(">", 0))
+				defaultMapFound := false
+				for _, configMapRef := range configMapRefs {
+					if configMapRef.Kind == ConfigMapKind {
+						Expect(configMapRef.Name).To(ContainSubstring(chartVer))
+						serviceName := helmRelease.ObjectMeta.Name
+						configMapFilePath := path.Join(ServicesDirectory, serviceName, chartVer, DefaultDirectoryName, DefaultConfigMapFileName)
+						Expect(configMapFilePath).To(BeAnExistingFile())
+						configMap, err := files.GetConfigMapObjectFromFile(configMapFilePath)
+						Expect(err).ShouldNot(HaveOccurred())
+						Expect(configMapRef.Name).Should(Equal(configMap.ObjectMeta.Name))
+						defaultMapFound = true
+						break
+					}
+				}
+				Expect(defaultMapFound).To(Equal(true))
+			})
+
+			
 		}
 	})
 
-	Context("App metadata files", func() {
+	Context("app metadata files", func() {
 		for _, service := range services {
 			metadataFilePath := path.Join(ServicesDirectory, service, MetadataFileName)
-			metadata, err := files.GetAppMetadata(metadataFilePath)
+			metadata, err := files.GetAppMetadataFromFile(metadataFilePath)
 			Expect(err).ShouldNot(HaveOccurred())
 
 			It("should have non-empty displayName", func() {
-				Expect(metadata.DisplayName).To(BeNumerically(">", 0))
+				Expect(len(metadata.DisplayName)).To(BeNumerically(">", 0))
 			})
 			
 			It("should have non-empty description", func() {
-				Expect(metadata.Description).To(BeNumerically(">", 0))
+				Expect(len(metadata.Description)).To(BeNumerically(">", 0))
 			})
 			
 			It("should have non-empty category", func() {
-				Expect(metadata.Category).To(BeNumerically(">", 0))
+				Expect(len(metadata.Category)).To(BeNumerically(">", 0))
 			})
 
 			It("should have non-empty scope(s) with supported values", func() {
-				Expect(metadata.Scope).To(BeNumerically(">", 0))
+				Expect(len(metadata.Scope)).To(BeNumerically(">", 0))
 				for _, sc := range metadata.Scope {
 					Expect(sc).To(BeElementOf("workspace", "project"))
 				}
 			})
 			
 			It ("should have non-empty overview", func() {
-				Expect(metadata.Overview).To(BeNumerically(">", 0))
+				Expect(len(metadata.Overview)).To(BeNumerically(">", 0))
 			})
 			
 			It ("should have non-empty icon", func() {
-				Expect(metadata.Icon).To(BeNumerically(">", 0))
+				Expect(len(metadata.Icon)).To(BeNumerically(">", 0))
 			})	
 		}
 	})

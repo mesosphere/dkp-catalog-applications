@@ -7,6 +7,7 @@ require (
 	github.com/fluxcd/source-controller/api v0.20.1
 	github.com/onsi/ginkgo/v2 v2.0.0
 	github.com/onsi/gomega v1.17.0
+	k8s.io/api v0.23.1
 	sigs.k8s.io/yaml v1.3.0
 )
 
