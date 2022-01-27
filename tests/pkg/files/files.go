@@ -12,6 +12,27 @@ import (
 
 const YamlFileExt = ".yaml"
 
+type AppMetadata struct {
+	DisplayName string   `yaml:"displayName"`
+	Description string   `yaml:"description"`
+	Category    []string `yaml:"category"`
+	Scope       []string `yaml:"scope"`
+	Overview    string   `yaml:"overview"`
+	Icon        string   `yaml:"icon"`
+}
+
+func GetAppMetadata(mdFilePath string) (*AppMetadata, error) {
+	bytes, err := os.ReadFile(mdFilePath)
+	if err != nil {
+		return nil, err
+	}
+	metaData := &AppMetadata{}
+	if err = yaml.Unmarshal(bytes, metaData); err != nil {
+		return nil, err
+	}
+	return metaData, nil
+}
+
 // ListDirectories returns the name of directories that are within the input directory (not recursive).
 func ListDirectories(directory string) ([]string, error) {
 	directories := []string{}

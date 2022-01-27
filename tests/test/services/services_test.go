@@ -29,12 +29,17 @@ var _ = Describe("Services", func() {
 	// │   ├── kafka-operator.yaml
 	// │   └── kustomization.yaml
 	// └── metadata.yaml
-	Context("directory structure", func() {
+
+	var services []string
+
+	BeforeEach(func() {
 		// Get services names from services dir
 		services, err := files.ListDirectories(ServicesDirectory)
 		Expect(err).ShouldNot(HaveOccurred())
 		Expect(len(services)).To(BeNumerically(">", 0))
+	})	
 
+	Context("directory structure", func() {
 		// Get service versions from list of services
 		serviceVersions, err := files.GetSubdirectoryMap(ServicesDirectory)
 		Expect(err).ShouldNot(HaveOccurred())
@@ -76,6 +81,41 @@ var _ = Describe("Services", func() {
 					fmt.Sprintf("the %s HelmRelease references a HelmRepository (%s) that doesn't exist in the %s directory",
 						helmRelease.Name, helmRelease.Spec.Chart.Spec.SourceRef.Name, HelmRepoDirectory))
 			})
+		}
+	})
+
+	Context("App metadata files", func() {
+		for _, service := range services {
+			metadataFilePath := path.Join(ServicesDirectory, service, MetadataFileName)
+			metadata, err := files.GetAppMetadata(metadataFilePath)
+			Expect(err).ShouldNot(HaveOccurred())
+
+			It("should have non-empty displayName", func() {
+				Expect(metadata.DisplayName).To(BeNumerically(">", 0))
+			})
+			
+			It("should have non-empty description", func() {
+				Expect(metadata.Description).To(BeNumerically(">", 0))
+			})
+			
+			It("should have non-empty category", func() {
+				Expect(metadata.Category).To(BeNumerically(">", 0))
+			})
+
+			It("should have non-empty scope(s) with supported values", func() {
+				Expect(metadata.Scope).To(BeNumerically(">", 0))
+				for _, sc := range metadata.Scope {
+					Expect(sc).To(BeElementOf("workspace", "project"))
+				}
+			})
+			
+			It ("should have non-empty overview", func() {
+				Expect(metadata.Overview).To(BeNumerically(">", 0))
+			})
+			
+			It ("should have non-empty icon", func() {
+				Expect(metadata.Icon).To(BeNumerically(">", 0))
+			})	
 		}
 	})
 })
