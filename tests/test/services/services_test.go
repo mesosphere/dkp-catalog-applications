@@ -8,7 +8,8 @@ import (
 	. "github.com/onsi/gomega"
 
 	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
-
+	// kustomizebuild "sigs.k8s.io/kustomize/api/krusty"
+	// "sigs.k8s.io/kustomize/kyaml/filesys"
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
 
@@ -63,6 +64,23 @@ var _ = Describe("Services", func() {
 		}
 	})
 
+	// TODO: enable this once https://github.com/kubernetes-sigs/kustomize/issues/4409 is resolved
+	// Context("kustomizations", func() {
+	// 	// equivalent to a "kustomize build FILEPATH" command run
+	// 	kBuild := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
+	// 	memFs := filesys.MakeFsInMemory()
+
+	// 	for _, service := range services {
+	// 		versions := ListDirectories(path.join(ServicesDirectory, service))
+	// 		for _, version := range versions {
+	// 			kustomizationPath := path.join(path.join(ServicesDirectory, service, version))
+	// 			It("should be able to run kustomize build", func() {
+	// 				_, err := kBuild.Run(memFs, kustomizationPath)
+	// 			})
+	// 		}
+	// 	}
+	// })
+
 	Context("helmreleases", func() {
 		// Get HelmRepository name/urls map
 		helmRepos := make(map[string]string)
@@ -104,8 +122,6 @@ var _ = Describe("Services", func() {
 				}
 				Expect(defaultMapFound).To(Equal(true))
 			})
-
-			
 		}
 	})
 
