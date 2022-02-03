@@ -1,16 +1,22 @@
 package files_test
 
 import (
+	"fmt"
 	"os"
 	"path"
+	"path/filepath"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	helmcontrollerv2beta1 "github.com/fluxcd/helm-controller/api/v2beta1"
+	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
+	"sigs.k8s.io/yaml"
 
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
-
-const testDataDir = "./testdata/"
 
 var _ = Describe("Files", func() {
 	It("can list directories", func() {
@@ -62,28 +68,103 @@ var _ = Describe("Files", func() {
 		Expect(subDirMap).Should(BeEmpty())
 	})
 
-	It("can list HelmReleases", func() {
-		helmReleases, err := files.ListHelmReleases(testDataDir)
-		Expect(err).ShouldNot(HaveOccurred())
+	Context("with HelmRelease test data", func() {
+		It("can list HelmReleases", func() {
+			// We are creating the helm release test files here because if committed to the repo
+			// the k-cli will attempt to parse and download the charts
+			dir, err := createValidHelmRelease()
+			Expect(err).ShouldNot(HaveOccurred())
+			defer os.RemoveAll(dir)
+			helmReleases, err := files.ListHelmReleases(dir)
+			Expect(err).ShouldNot(HaveOccurred())
 
-		Expect(len(helmReleases)).To(BeNumerically(">", 0))
+			Expect(len(helmReleases)).To(BeNumerically(">", 0))
+		})
+
+		It("cannot list HelmReleases", func() {
+			_, err := files.ListHelmReleases("./foo/bar")
+			Expect(err).Should(HaveOccurred())
+		})
 	})
 
-	It("cannot list HelmReleases", func() {
-		_, err := files.ListHelmReleases("./foo/bar")
-		Expect(err).Should(HaveOccurred())
-	})
+	Context("with HelmRepository test data", func() {
+		It("can get HelmRepositories", func() {
+			helmRepos := make(map[string]string)
+			// We are creating the helm repo test files here because if committed to the repo
+			// the k-cli will attempt to parse and download the charts
+			dir, err := createValidHelmRepo()
+			Expect(err).ShouldNot(HaveOccurred())
+			defer os.RemoveAll(dir)
+			fmt.Println(dir)
+			err = files.GetHelmRepoURLs(dir, helmRepos)
+			Expect(err).ShouldNot(HaveOccurred())
+			Expect(len(helmRepos)).To(BeNumerically(">", 0))
+		})
 
-	It("can get HelmRepositories", func() {
-		helmRepos := make(map[string]string)
-		err := files.GetHelmRepoURLs(testDataDir, helmRepos)
-		Expect(err).ShouldNot(HaveOccurred())
-		Expect(len(helmRepos)).To(BeNumerically(">", 0))
-	})
-
-	It("cannot get HelmRepositories", func() {
-		helmRepos := make(map[string]string)
-		err := files.GetHelmRepoURLs("./foo/bar/", helmRepos)
-		Expect(err).Should(HaveOccurred())
+		It("cannot get HelmRepositories", func() {
+			helmRepos := make(map[string]string)
+			err := files.GetHelmRepoURLs("./foo/bar/", helmRepos)
+			Expect(err).Should(HaveOccurred())
+		})
 	})
 })
+
+func createValidHelmRepo() (string, error) {
+	dir, err := os.MkdirTemp("", "")
+	if err != nil {
+		return "", err
+	}
+	helmRepo := sourcecontrollerv1beta1.HelmRepository{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       sourcecontrollerv1beta1.HelmRepositoryKind,
+			APIVersion: sourcecontrollerv1beta1.GroupVersion.String(),
+		},
+		Spec: sourcecontrollerv1beta1.HelmRepositorySpec{
+			URL:      "https://foo.bar",
+			Interval: metav1.Duration{Duration: time.Second},
+		},
+	}
+	bytes, err := yaml.Marshal(&helmRepo)
+	if err != nil {
+		return "", err
+	}
+	err = os.WriteFile(filepath.Join(dir, "helmrepo.yaml"), bytes, 0o600)
+	if err != nil {
+		return "", err
+	}
+	return dir, nil
+}
+
+func createValidHelmRelease() (string, error) {
+	dir, err := os.MkdirTemp("", "")
+	if err != nil {
+		return "", err
+	}
+	helmRelease := helmcontrollerv2beta1.HelmRelease{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       helmcontrollerv2beta1.HelmReleaseKind,
+			APIVersion: helmcontrollerv2beta1.GroupVersion.String(),
+		},
+		Spec: helmcontrollerv2beta1.HelmReleaseSpec{
+			Chart: helmcontrollerv2beta1.HelmChartTemplate{
+				Spec: helmcontrollerv2beta1.HelmChartTemplateSpec{
+					Chart: "foo",
+					SourceRef: helmcontrollerv2beta1.CrossNamespaceObjectReference{
+						Kind:      sourcecontrollerv1beta1.HelmRepositoryKind,
+						Name:      "foo",
+						Namespace: "foo",
+					},
+				},
+			},
+		},
+	}
+	bytes, err := yaml.Marshal(&helmRelease)
+	if err != nil {
+		return "", err
+	}
+	err = os.WriteFile(filepath.Join(dir, "helmrelease.yaml"), bytes, 0o600)
+	if err != nil {
+		return "", err
+	}
+	return dir, nil
+}
