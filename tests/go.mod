@@ -4,9 +4,10 @@ go 1.17
 
 require (
 	github.com/fluxcd/helm-controller/api v0.15.0
-	github.com/fluxcd/source-controller/api v0.20.1
+	github.com/fluxcd/source-controller/api v0.21.1
 	github.com/onsi/ginkgo/v2 v2.1.0
 	github.com/onsi/gomega v1.18.0
+	k8s.io/apimachinery v0.23.1
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -31,7 +32,6 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/apiextensions-apiserver v0.23.1 // indirect
-	k8s.io/apimachinery v0.23.1 // indirect
 	k8s.io/klog/v2 v2.30.0 // indirect
 	k8s.io/utils v0.0.0-20211208161948-7d6a63dca704 // indirect
 	sigs.k8s.io/controller-runtime v0.11.0 // indirect
