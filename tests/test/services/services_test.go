@@ -8,8 +8,8 @@ import (
 	. "github.com/onsi/gomega"
 
 	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
-	// kustomizebuild "sigs.k8s.io/kustomize/api/krusty"
-	// "sigs.k8s.io/kustomize/kyaml/filesys".
+	"sigs.k8s.io/kustomize/api/krusty"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
 
@@ -65,22 +65,23 @@ var _ = Describe("Services", func() {
 		}
 	})
 
-	// TODO: enable this once https://github.com/kubernetes-sigs/kustomize/issues/4409 is resolved
-	// Context("kustomizations", func() {
-	// 	// equivalent to a "kustomize build FILEPATH" command run
-	// 	kBuild := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
-	// 	memFs := filesys.MakeFsInMemory()
+	Context("kustomizations", func() {
+		// equivalent to a "kustomize build FILEPATH" command run
+		kBuild := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
+		memFs := filesys.MakeFsInMemory()
 
-	// 	for _, service := range services {
-	// 		versions := ListDirectories(path.join(ServicesDirectory, service))
-	// 		for _, version := range versions {
-	// 			kustomizationPath := path.join(path.join(ServicesDirectory, service, version))
-	// 			It("should be able to run kustomize build", func() {
-	// 				_, err := kBuild.Run(memFs, kustomizationPath)
-	// 			})
-	// 		}
-	// 	}
-	// })
+		for _, service := range services {
+			versions, err := files.ListDirectories(path.Join(ServicesDirectory, service))
+			Expect(err).ShouldNot(HaveOccurred())
+			for _, version := range versions {
+				kustomizationPath := path.Join(ServicesDirectory, service, version)
+				It("should be able to run kustomize build", func() {
+					_, err := kBuild.Run(memFs, kustomizationPath)
+					Expect(err).ShouldNot(HaveOccurred())
+				})
+			}
+		}
+	})
 
 	Context("helmreleases", func() {
 		// Get HelmRepository name/urls map
@@ -104,19 +105,19 @@ var _ = Describe("Services", func() {
 			})
 
 			It("should reference a ConfigMap that exists in default directory", func() {
-				configMapRefs := helmRelease.Spec.ValuesFrom
+				valuesFrom := helmRelease.Spec.ValuesFrom
 				chartVer := helmRelease.Spec.Chart.Spec.Version
 				Expect(len(helmRelease.Spec.ValuesFrom)).To(BeNumerically(">", 0))
 				defaultMapFound := false
-				for _, configMapRef := range configMapRefs {
-					if configMapRef.Kind == ConfigMapKind {
-						Expect(configMapRef.Name).To(ContainSubstring(chartVer))
+				for _, valueFrom := range valuesFrom {
+					if valueFrom.Kind == ConfigMapKind {
+						Expect(valueFrom.Name).To(ContainSubstring(chartVer))
 						serviceName := helmRelease.ObjectMeta.Name
 						configMapFilePath := path.Join(ServicesDirectory, serviceName, chartVer, DefaultDirectoryName, DefaultConfigMapFileName)
 						Expect(configMapFilePath).To(BeAnExistingFile())
 						configMap, err := files.GetConfigMapObjectFromFile(configMapFilePath)
 						Expect(err).ShouldNot(HaveOccurred())
-						Expect(configMapRef.Name).Should(Equal(configMap.ObjectMeta.Name))
+						Expect(valueFrom.Name).Should(Equal(configMap.ObjectMeta.Name))
 						defaultMapFound = true
 						break
 					}
