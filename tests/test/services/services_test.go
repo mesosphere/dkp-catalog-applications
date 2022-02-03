@@ -10,6 +10,7 @@ import (
 	sourcecontrollerv1beta1 "github.com/fluxcd/source-controller/api/v1beta1"
 	"sigs.k8s.io/kustomize/api/krusty"
 	"sigs.k8s.io/kustomize/kyaml/filesys"
+
 	"github.com/mesosphere/dkp-catalog-applications/tests/pkg/files"
 )
 
@@ -67,7 +68,8 @@ var _ = Describe("Services", func() {
 
 	Context("kustomizations", func() {
 		// equivalent to a "kustomize build FILEPATH" command run
-		kBuild := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
+		// pre-commit prevents us from using var name starting with k
+		customizer := krusty.MakeKustomizer(krusty.MakeDefaultOptions())
 		memFs := filesys.MakeFsInMemory()
 
 		for _, service := range services {
@@ -76,7 +78,7 @@ var _ = Describe("Services", func() {
 			for _, version := range versions {
 				kustomizationPath := path.Join(ServicesDirectory, service, version)
 				It("should be able to run kustomize build", func() {
-					_, err := kBuild.Run(memFs, kustomizationPath)
+					_, err := customizer.Run(memFs, kustomizationPath)
 					Expect(err).ShouldNot(HaveOccurred())
 				})
 			}
