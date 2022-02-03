@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/golangci/golangci-lint v1.43.0
-	github.com/onsi/ginkgo/v2 v2.0.0
+	github.com/onsi/ginkgo/v2 v2.1.0
 	gotest.tools/gotestsum v1.7.0
 	mvdan.cc/sh/v3 v3.4.2
 )
