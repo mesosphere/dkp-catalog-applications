@@ -3,7 +3,7 @@ module github.com/mesosphere/dkp-catalog-applications/tests
 go 1.17
 
 require (
-	github.com/fluxcd/helm-controller/api v0.15.0
+	github.com/fluxcd/helm-controller/api v0.16.0
 	github.com/fluxcd/source-controller/api v0.20.1
 	github.com/onsi/ginkgo/v2 v2.1.0
 	github.com/onsi/gomega v1.18.1
