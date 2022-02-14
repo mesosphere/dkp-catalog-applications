@@ -7,7 +7,7 @@ require (
 	github.com/fluxcd/source-controller/api v0.20.1
 	github.com/onsi/ginkgo/v2 v2.1.0
 	github.com/onsi/gomega v1.18.1
-	k8s.io/apimachinery v0.23.1
+	k8s.io/apimachinery v0.23.3
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -36,5 +36,5 @@ require (
 	k8s.io/utils v0.0.0-20211208161948-7d6a63dca704 // indirect
 	sigs.k8s.io/controller-runtime v0.11.0 // indirect
 	sigs.k8s.io/json v0.0.0-20211208200746-9f7c6b3444d2 // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.2.0 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.2.1 // indirect
 )
