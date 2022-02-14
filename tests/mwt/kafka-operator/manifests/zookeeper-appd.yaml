@@ -1,0 +1,8 @@
+apiVersion: apps.kommander.d2iq.io/v1alpha2
+kind: AppDeployment
+metadata:
+  name: zookeeper-operator-1
+spec:
+  appRef:
+    kind: App
+    name: zookeeper-operator-0.2.13

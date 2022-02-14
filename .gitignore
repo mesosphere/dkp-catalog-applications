@@ -40,3 +40,4 @@ dist/
 .env
 .local
 .envrc.local
+kubeconfig

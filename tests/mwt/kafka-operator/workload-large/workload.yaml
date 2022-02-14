@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-cluster-producer-tests
+  labels:
+    app: d2iq-load-tests
+spec:
+  replicas: 100
+  selector:
+    matchLabels:
+      name: d2iq-load-tests
+  template:
+    metadata:
+      labels:
+        name: d2iq-load-tests
+    spec:
+      containers:
+        - name: kafka-ultron-loader
+          image: mesosphere/kafka:workload
+          imagePullPolicy: Always
+          command:
+            - /opt/kafka/run_producer_test.sh
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "kafka-headless:29092"
+            - name: NUM_TOPICS
+              value: "30"
+            - name: TEST_INTERVAL_SECONDS
+              value: "1"
+            - name: PRODUCER_THROUGHPUT
+              value: "100000000"
+            - name: NUM_RECORDS
+              value: "100000"
+            - name: RECORD_SIZE
+              value: "50"
+          resources:
+            limits:
+              cpu: 3000m
+              memory: 1024Mi
+            requests:
+              cpu: 3000m
+              memory: 1024Mi
+  strategy:
+    type: Recreate
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-cluster-consumer-tests
+  labels:
+    app: d2iq-load-tests
+spec:
+  replicas: 100
+  selector:
+    matchLabels:
+      name: d2iq-load-tests
+  template:
+    metadata:
+      labels:
+        name: d2iq-load-tests
+    spec:
+      containers:
+        - name: kafka-ultron-loader
+          image: mesosphere/kafka:workload
+          imagePullPolicy: Always
+          command:
+            - /opt/kafka/run_consumer_test.sh
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: "kafka-headless:29092"
+            - name: NUM_TOPICS
+              value: "30"
+            - name: NUM_RECORDS
+              value: "1000"
+            - name: TEST_INTERVAL_SECONDS
+              value: "1"
+          resources:
+            limits:
+              cpu: 3000m
+              memory: 1024Mi
+            requests:
+              cpu: 3000m
+              memory: 1024Mi
+  strategy:
+    type: Recreate

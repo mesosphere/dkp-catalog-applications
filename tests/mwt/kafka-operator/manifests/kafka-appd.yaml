@@ -1,0 +1,8 @@
+apiVersion: apps.kommander.d2iq.io/v1alpha2
+kind: AppDeployment
+metadata:
+  name: kafka-operator-1
+spec:
+  appRef:
+    kind: App
+    name: kafka-operator-0.20.0
