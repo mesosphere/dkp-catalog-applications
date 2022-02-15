@@ -10,3 +10,4 @@ kubectl delete deployment kafka-cluster-consumer-tests -n "$PROJECT_NAMESPACE" -
 kubectl delete deployment utils-pod -n "$PROJECT_NAMESPACE" --kubeconfig "$ATTACHED_CLUSTER_KUBECONFIG_PATH"
 
 kubectl delete -n "$WORKSPACE_NAMESPACE" appdeployments kafka-operator-1 zookeeper-operator-1
+kubectl delete -n "$WORKSPACE_NAMESPACE" GitRepository dkp-catalog-applications
