@@ -5,6 +5,13 @@ set -e
 : "${WORKSPACE_NAMESPACE:?"WORKSPACE_NAMESPACE environment variable is not set"}"
 : "${PROJECT_NAMESPACE:?"PROJECT_NAMESPACE environment variable is not set"}"
 
+# Create catalog Git Repo
+kubectl apply -f ./manifests/dkp-catalog-applications.yaml -n "$WORKSPACE_NAMESPACE"
+
+# Wait for Git Repo to be ready
+kubectl wait -n "$WORKSPACE_NAMESPACE" --timeout=300s GitRepository dkp-catalog-applications \
+  --for=condition=Ready
+
 # Create app deployments on management cluster
 kubectl apply -f ./manifests/zookeeper-appd.yaml -n "$WORKSPACE_NAMESPACE"
 kubectl apply -f ./manifests/kafka-appd.yaml -n "$WORKSPACE_NAMESPACE"
