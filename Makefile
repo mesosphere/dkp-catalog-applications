@@ -16,6 +16,7 @@ else
 endif
 
 include make/ci.mk
+include make/validate.mk
 
 .PHONY: clean
 clean: ## remove files created during build
