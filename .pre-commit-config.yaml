@@ -1,13 +1,6 @@
 repos:
 - repo: local
   hooks:
-  - id: lint-go-code
-    name: Lint go code
-    entry: make lint
-    files: (^go\.(mod|sum)|\.go$)
-    language: system
-    stages: [commit]
-    pass_filenames: false
   - id: check-service-metadata
     name: Check service metadata exists
     entry: hack/validate-service-metadata.sh
@@ -52,12 +45,11 @@ repos:
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
   rev: 2.1.5
   hooks:
+  - id: script-must-have-extension
+    stages: [commit]
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.7.2.1
+  hooks:
   - id: shellcheck
     stages: [commit]
     args: ["-e", "SC2211"]
-    additional_dependencies: []
-  - id: shfmt
-    stages: [commit]
-    args: ["-s", "-i", "2"]
-  - id: script-must-have-extension
-    stages: [commit]
