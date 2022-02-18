@@ -18,49 +18,15 @@ endif
 include make/ci.mk
 include make/validate.mk
 
-.PHONY: clean
-clean: ## remove files created during build
-	$(call print-target)
-	cd tests && rm -f coverage.*
-
 .PHONY: install-tools
 install-tools: ## go install tools
 	$(call print-target)
 	cd tools && go install -v $(shell cd tools && go list -f '{{ join .Imports " " }}' -tags=tools)
 
-.PHONY: lint
-lint: ## golangci-lint
-lint: install-tools
-	$(call print-target)
-	cd tests && golangci-lint run -c ${REPO_ROOT}/.golangci.yml --fix
-
-.PHONY: test
-test: ## go test with race detector and code coverage
-test: install-tools
-	$(call print-target)
-	cd tests && gotestsum \
-			--junitfile junit-report.xml \
-			--junitfile-testsuite-name=relative \
-			--junitfile-testcase-classname=short \
-			-- \
-			-covermode=atomic \
-			-coverprofile=coverage.out \
-			-race \
-			-short \
-			-v \
-			./...
-	cd tests && go tool cover -html=coverage.out -o coverage.html
-
 .PHONY: mod-tidy
 mod-tidy: ## go mod tidy
 	$(call print-target)
-	cd tests && go mod tidy
 	cd tools && go mod tidy
-
-.PHONY: go-clean
-go-clean: ## go clean build, test and modules caches
-	$(call print-target)
-	cd tests && go clean -r -i -cache -testcache -modcache
 
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files
