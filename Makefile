@@ -34,3 +34,6 @@ help:
 define print-target
     @printf "Executing target: \033[36m$@\033[0m\n"
 endef
+
+.PHONY: test
+test: validate-manifests
