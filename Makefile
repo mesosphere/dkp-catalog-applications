@@ -18,16 +18,6 @@ endif
 include make/ci.mk
 include make/validate.mk
 
-.PHONY: install-tools
-install-tools: ## go install tools
-	$(call print-target)
-	cd tools && go install -v $(shell cd tools && go list -f '{{ join .Imports " " }}' -tags=tools)
-
-.PHONY: mod-tidy
-mod-tidy: ## go mod tidy
-	$(call print-target)
-	cd tools && go mod tidy
-
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files
 pre-commit: ; $(info $(M) running pre-commit)
