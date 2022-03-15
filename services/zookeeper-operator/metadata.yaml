@@ -2,6 +2,9 @@ displayName: ZooKeeper Operator
 description: The ZooKeeper operator deploys Zookeeper 3.6.3 clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
 category:
   - Data Services
+certifications:
+  - certified
+  - airgapped
 scope:
   - workspace
 overview: |-
