@@ -4,6 +4,8 @@ kind: HelmRepository
 metadata:
   name: mesosphere.github.io-spark-charts
   namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/dkp-airgapped-status: certified
 spec:
   url: "${helmMirrorURL:=http://mesosphere.github.io/spark-on-k8s-operator}"
   interval: 10m

@@ -4,6 +4,8 @@ kind: HelmRepository
 metadata:
   name: kubernetes-charts.banzaicloud.com
   namespace: ${workspaceNamespace}
+  labels:
+    kommander.d2iq.io/dkp-airgapped-status: certified
 spec:
   url: "${helmMirrorURL:=https://kubernetes-charts.banzaicloud.com}"
   interval: 10m
