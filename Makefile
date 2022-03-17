@@ -8,6 +8,12 @@ INTERACTIVE := $(shell [ -t 0 ] && echo 1)
 
 export GITHUB_ORG ?= mesosphere
 export GITHUB_REPOSITORY ?= dkp-catalog-applications
+GOARCH ?= $(shell go env GOARCH)
+GOOS ?= $(shell go env GOOS)
+MINDTHEGAP_VERSION ?= v0.12.0
+GOJQ_VERSION ?= v0.12.4
+export GOJQ_BIN = bin/$(GOOS)/$(GOARCH)/gojq-$(GOJQ_VERSION)
+export MINDTHEGAP_BIN = bin/$(GOOS)/$(GOARCH)/mindthegap
 
 ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
@@ -17,6 +23,8 @@ endif
 
 include make/ci.mk
 include make/validate.mk
+include make/release.mk
+include make/tools.mk
 
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files
