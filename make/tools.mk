@@ -2,14 +2,10 @@
 mindthegap: $(MINDTHEGAP_BIN)
 	$(call print-target)
 
-MINDTHEGAP_GOARCH=$(GOARCH)
-ifeq ($(GOOS),darwin)
-	MINDTHEGAP_GOARCH=all
-endif
 $(MINDTHEGAP_BIN):
 	$(call print-target)
 	mkdir -p $(dir $@) _install
-	curl -fsSL https://github.com/mesosphere/mindthegap/releases/download/$(MINDTHEGAP_VERSION)/mindthegap_$(MINDTHEGAP_VERSION)_$(GOOS)_$(MINDTHEGAP_GOARCH).tar.gz | tar xz -C _install 'mindthegap'
+	curl -fsSL https://github.com/mesosphere/mindthegap/releases/download/$(MINDTHEGAP_VERSION)/mindthegap_$(MINDTHEGAP_VERSION)_$(GOOS)_$(GOARCH).tar.gz | tar xz -C _install 'mindthegap'
 	mv _install/mindthegap $@
 	rm -rf _install
 

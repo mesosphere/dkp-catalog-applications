@@ -25,6 +25,12 @@
         "required": "true",
         "priority": 2,
         "id": "ClosedSource_Kommander2_DkpCatalogApplications_UnitTests"
+      },
+      "dkp-catalog-applications/build-image-bundle": {
+        "type": "teamcity",
+        "required": "true",
+        "priority": 2,
+        "id": "ClosedSource_Kommander2_DkpCatalogApplications_BuildImageBundle"
       }
     },
     "autotest-on-backports-and-trains": true,
