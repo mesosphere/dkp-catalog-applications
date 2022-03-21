@@ -40,3 +40,6 @@ dist/
 .env
 .local
 .envrc.local
+
+bin
+_build
