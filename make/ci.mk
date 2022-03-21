@@ -49,6 +49,10 @@ ci.docker.run: ci.docker.ensure ; $(info $(M) Runs the build in the CI Docker im
  		-w $(REPO_ROOT) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /etc/docker/certs.d:/etc/docker/certs.d \
+		$(if $(AWS_REGION),-e AWS_REGION=$(AWS_REGION)) \
+		$(if $(AWS_ACCESS_KEY_ID),-e AWS_ACCESS_KEY_ID=$(AWS_ACCESS_KEY_ID)) \
+		$(if $(AWS_SECRET_ACCESS_KEY),-e AWS_SECRET_ACCESS_KEY=$(AWS_SECRET_ACCESS_KEY)) \
+		$(if $(AWS_SESSION_TOKEN),-e AWS_SESSION_TOKEN=$(AWS_SESSION_TOKEN)) \
 		$(if $(DOCKER_USERNAME),-e DOCKER_USERNAME=$(DOCKER_USERNAME)) \
 		$(if $(DOCKER_PASSWORD),-e DOCKER_PASSWORD=$(DOCKER_PASSWORD)) \
 		$(if $(SSH_AUTH_SOCK),-v $(SSH_AUTH_SOCK):$(SSH_AUTH_SOCK) -e SSH_AUTH_SOCK=$(SSH_AUTH_SOCK)) \
