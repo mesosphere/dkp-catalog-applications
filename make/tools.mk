@@ -21,7 +21,7 @@ endif
 $(GOJQ_BIN):
 	$(call print-target)
 	mkdir -p $(dir $@) _install
-	curl -fsSL https://github.com/itchyny/gojq/releases/download/$(GOJQ_VERSION)/gojq_$(GOJQ_VERSION)_$(GOOS)_$(GOARCH).$(GOJQ_EXT) | tar xz -C _install --wildcards --strip-components 1 '*/gojq'
+	curl -fsSL https://github.com/itchyny/gojq/releases/download/$(GOJQ_VERSION)/gojq_$(GOJQ_VERSION)_$(GOOS)_$(GOARCH).$(GOJQ_EXT) | tar xz -C _install $(WILDCARDS) --strip-components 1 '*/gojq'
 	mv _install/gojq $@
 	chmod 755 $@
 	rm -rf _install

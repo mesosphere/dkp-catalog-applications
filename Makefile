@@ -15,6 +15,10 @@ GOJQ_VERSION ?= v0.12.4
 export GOJQ_BIN = bin/$(GOOS)/$(GOARCH)/gojq-$(GOJQ_VERSION)
 export MINDTHEGAP_BIN = bin/$(GOOS)/$(GOARCH)/mindthegap
 
+ifneq (,$(filter tar (GNU tar)%, $(shell tar --version)))
+WILDCARDS := --wildcards
+endif
+
 ifneq ($(wildcard $(REPO_ROOT)/.pre-commit-config.yaml),)
 	PRE_COMMIT_CONFIG_FILE ?= $(REPO_ROOT)/.pre-commit-config.yaml
 else
