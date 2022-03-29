@@ -1,7 +1,7 @@
 IMAGE_BUILD_DIR := _build
 IMAGE_TAR_FILE := $(IMAGE_BUILD_DIR)/catalog-applications-image-bundle.tar.gz
 CATALOG_IMAGES_TXT := $(IMAGE_BUILD_DIR)/catalog_images.txt
-RELEASE_S3_BUCKET ?= downloads.mesosphere.io/kommander
+RELEASE_S3_BUCKET ?= downloads.mesosphere.io
 
 CATALOG_APPLICATIONS_VERSION ?= ""
 
@@ -22,5 +22,5 @@ release.s3:
 ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 	$(info CATALOG_APPLICATIONS_VERSION should be set to the version which is part of the s3 file path)
 else
-	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/airgapped/$(CATALOG_APPLICATIONS_VERSION)/catalog_applications_image_bundle_$(CATALOG_APPLICATIONS_VERSION)_linux_amd64.tar.gz
+	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/catalog_applications_image_bundle_$(CATALOG_APPLICATIONS_VERSION)_linux_amd64.tar.gz
 endif
