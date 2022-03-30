@@ -1,7 +1,7 @@
 BUILD_DIR := _build
-IMAGE_TAR_FILE := $(BUILD_DIR)/catalog-applications-image-bundle.tar.gz
+IMAGE_TAR_FILE := $(BUILD_DIR)/dkp-catalog-applications-image-bundle.tar.gz
 REPO_ARCHIVE_FILE := $(BUILD_DIR)/dkp-catalog-applications.tar.gz
-CATALOG_IMAGES_TXT := $(BUILD_DIR)/catalog_images.txt
+CATALOG_IMAGES_TXT := $(BUILD_DIR)/dkp_catalog_images.txt
 RELEASE_S3_BUCKET ?= downloads.mesosphere.io
 
 CATALOG_APPLICATIONS_VERSION ?= ""
