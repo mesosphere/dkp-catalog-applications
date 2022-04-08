@@ -10,7 +10,7 @@ spec:
       chart: spark-operator
       sourceRef:
         kind: HelmRepository
-        name: mesosphere.github.io-spark-charts
+        name: local-spark-charts
         namespace: ${workspaceNamespace}
       version: 1.1.18
   interval: 15s
