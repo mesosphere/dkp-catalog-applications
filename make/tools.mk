@@ -25,3 +25,8 @@ $(GOJQ_BIN):
 	mv _install/gojq $@
 	chmod 755 $@
 	rm -rf _install
+
+.PHONY: kommander-cli
+kommander-cli:
+	$(call print-target)
+	CGO_ENABLED=0 go install github.com/mesosphere/kommander-cli/v2@$(KOMMANDER_CLI_VERSION)

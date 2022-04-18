@@ -1,19 +1,23 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash -euo pipefail
-
 REPO_ROOT := $(CURDIR)
-
 INTERACTIVE := $(shell [ -t 0 ] && echo 1)
 
+export GOPRIVATE ?= github.com/mesosphere
 export GITHUB_ORG ?= mesosphere
 export GITHUB_REPOSITORY ?= dkp-catalog-applications
+export GOBIN := $(REPO_ROOT)/bin/$(GOOS)/$(GOARCH)
+export PATH := $(GOBIN):$(PATH)
 GOARCH ?= $(shell go env GOARCH)
 GOOS ?= $(shell go env GOOS)
+
 MINDTHEGAP_VERSION ?= v0.13.1
 GOJQ_VERSION ?= v0.12.4
+KOMMANDER_CLI_VERSION ?= main
 export GOJQ_BIN = bin/$(GOOS)/$(GOARCH)/gojq-$(GOJQ_VERSION)
 export MINDTHEGAP_BIN = bin/$(GOOS)/$(GOARCH)/mindthegap
+export KOMMANDER_CLI_BIN = bin/kommander-cli
 
 ifneq (,$(filter tar (GNU tar)%, $(shell tar --version)))
 WILDCARDS := --wildcards
@@ -49,3 +53,8 @@ endef
 
 .PHONY: test
 test: validate-manifests
+
+.PHONY: clean
+clean:
+	$(call print-target)
+	@rm -rf bin _build
