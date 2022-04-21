@@ -1,5 +1,6 @@
 displayName: ZooKeeper Operator
 description: The ZooKeeper operator deploys Zookeeper 3.6.3 clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
+allowMultipleInstances: false
 category:
   - Data Services
 certifications:
