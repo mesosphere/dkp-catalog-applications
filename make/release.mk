@@ -37,15 +37,22 @@ release.chart-bundle: kommander-cli
 		--output $(CHART_BUNDLE)
 
 .PHONY: release.s3
+release.s3: CHART_BUNDLE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+release.s3: REPO_ARCHIVE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+release.s3: IMAGE_BUNDLE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 release.s3:
 	$(call print-target)
 ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 	$(info CATALOG_APPLICATIONS_VERSION should be set to the version which is part of the s3 file path)
 else
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(CHART_BUNDLE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-	echo "Published Chart Bundle to https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz"
+	echo "Published Chart Bundle to $(CHART_BUNDLE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(REPO_ARCHIVE_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-	echo "Published Repo Archive File to https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz"
+	echo "Published Repo Archive File to $(REPO_ARCHIVE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-	echo "Published Image Bundle to https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz"
+	echo "Published Image Bundle to $(IMAGE_BUNDLE_URL)"
+	# Make sure to set SLACK_WEBHOOK environment variable to webhook url for the below mentioned channel
+	curl -X POST -H 'Content-type: application/json' \
+	--data '{"channel":"#eng-shipit","blocks":[{"type":"header","text":{"type":"plain_text","text":":announce: DKP Catalog Applications $(CATALOG_APPLICATIONS_VERSION) is out!","emoji":true}},{"type":"section","text":{"type":"mrkdwn","text":"*Bundles:*\n:airgap: Airgapped Image Bundle: $(IMAGE_BUNDLE_URL)\n:package: Chart Bundle: $(CHART_BUNDLE_URL)\n:github: Git Repo Tarball: $(REPO_ARCHIVE_URL)"}}]}' \
+	$(SLACK_WEBHOOK)
 endif
