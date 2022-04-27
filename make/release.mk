@@ -51,8 +51,10 @@ else
 	echo "Published Repo Archive File to $(REPO_ARCHIVE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Image Bundle to $(IMAGE_BUNDLE_URL)"
+ifeq (,$(findstring dev,$(CATALOG_APPLICATIONS_VERSION)))
 	# Make sure to set SLACK_WEBHOOK environment variable to webhook url for the below mentioned channel
 	curl -X POST -H 'Content-type: application/json' \
 	--data '{"channel":"#eng-shipit","blocks":[{"type":"header","text":{"type":"plain_text","text":":announce: DKP Catalog Applications $(CATALOG_APPLICATIONS_VERSION) is out!","emoji":true}},{"type":"section","text":{"type":"mrkdwn","text":"*Bundles:*\n:airgap: Airgapped Image Bundle: $(IMAGE_BUNDLE_URL)\n:package: Chart Bundle: $(CHART_BUNDLE_URL)\n:github: Git Repo Tarball: $(REPO_ARCHIVE_URL)"}}]}' \
 	$(SLACK_WEBHOOK)
+endif
 endif
