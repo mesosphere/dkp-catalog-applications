@@ -1,5 +1,5 @@
-DKP_BLOODHOUND_VERSION ?= 0.2.1
-DKP_BLOODHOUND_BIN := $(LOCAL_DIR)/bin/dkp-bloodhound_v$(DKP_BLOODHOUND_VERSION)
+DKP_BLOODHOUND_VERSION ?= 0.5.0
+DKP_BLOODHOUND_BIN := bin/dkp-bloodhound_v$(DKP_BLOODHOUND_VERSION)
 
 $(DKP_BLOODHOUND_BIN):
 	mkdir -p `dirname $@`
@@ -8,4 +8,4 @@ $(DKP_BLOODHOUND_BIN):
 
 .PHONY: validate-manifests
 validate-manifests: $(DKP_BLOODHOUND_BIN)
-	$(DKP_BLOODHOUND_BIN) . --helm-repo-path ./helm-repositories
+	$(DKP_BLOODHOUND_BIN)
