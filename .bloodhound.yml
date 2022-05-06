@@ -15,6 +15,7 @@ strict: true
 
 # types to be skipped (e.g. certmanager.k8s.io/v1, or certmanager.k8s.io/v1/Certificate)
 skip_types:
+  # Flux types are installed by Kommander, not included in this repository
   - source.toolkit.fluxcd.io/v1beta1/HelmRepository
 
 # load additional CRDs (URLs of CRD yaml files)
