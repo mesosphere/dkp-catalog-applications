@@ -1,5 +1,5 @@
 BUILD_DIR := _build
-IMAGE_TAR_FILE := $(BUILD_DIR)/dkp-catalog-applications-image-bundle.tar.gz
+IMAGE_TAR_FILE := $(BUILD_DIR)/dkp-catalog-applications-image-bundle.tar
 REPO_ARCHIVE_FILE := $(BUILD_DIR)/dkp-catalog-applications.tar.gz
 CHART_BUNDLE := $(BUILD_DIR)/dkp-catalog-applications-chart-bundle.tar.gz
 CATALOG_IMAGES_TXT := $(BUILD_DIR)/dkp_catalog_images.txt
@@ -39,7 +39,7 @@ release.chart-bundle: kommander-cli
 .PHONY: release.s3
 release.s3: CHART_BUNDLE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 release.s3: REPO_ARCHIVE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-release.s3: IMAGE_BUNDLE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+release.s3: IMAGE_BUNDLE_URL = https://downloads.d2iq.com/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 release.s3:
 	$(call print-target)
 ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
@@ -49,7 +49,7 @@ else
 	echo "Published Chart Bundle to $(CHART_BUNDLE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(REPO_ARCHIVE_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Repo Archive File to $(REPO_ARCHIVE_URL)"
-	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 	echo "Published Image Bundle to $(IMAGE_BUNDLE_URL)"
 ifeq (,$(findstring dev,$(CATALOG_APPLICATIONS_VERSION)))
 	# Make sure to set SLACK_WEBHOOK environment variable to webhook url for the below mentioned channel
