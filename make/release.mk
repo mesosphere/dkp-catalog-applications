@@ -49,7 +49,7 @@ ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 else
 	TMP_BUNDLE_DIR="$(mktemp -d)"
 	mv $(CHART_BUNDLE) $(TMP_BUNDLE_DIR)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-	tar cvf $(CHART_BUNDLE) NOTICES.txt -C $(TMP_BUNDLE_DIR) dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+	tar cvzf $(CHART_BUNDLE) NOTICES.txt -C $(TMP_BUNDLE_DIR) dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(CHART_BUNDLE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Chart Bundle to $(CHART_BUNDLE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(REPO_ARCHIVE_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
