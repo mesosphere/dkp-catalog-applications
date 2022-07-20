@@ -55,7 +55,7 @@ else
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(REPO_ARCHIVE_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Repo Archive File to $(REPO_ARCHIVE_URL)"
 	mv $(IMAGE_TAR_FILE) $(TMP_BUNDLE_DIR)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
-	tar cvf $(IMAGE_TAR_FILE) NOTICES.txt -C $(TMP_BUNDLE_DIR)dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
+	tar cvf $(IMAGE_TAR_FILE) NOTICES.txt -C $(TMP_BUNDLE_DIR) dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE)  s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 	echo "Published Image Bundle to $(IMAGE_BUNDLE_URL)"
 ifeq (,$(findstring dev,$(CATALOG_APPLICATIONS_VERSION)))
