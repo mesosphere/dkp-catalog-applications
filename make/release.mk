@@ -47,15 +47,15 @@ release.s3: release.add-attribution
 ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 	$(info CATALOG_APPLICATIONS_VERSION should be set to the version which is part of the s3 file path)
 else
-	TMP_BUNDLE_DIR="$(mktemp -d)"
-	mv $(CHART_BUNDLE) $(TMP_BUNDLE_DIR)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
-	tar cvzf $(CHART_BUNDLE) NOTICES.txt -C $(TMP_BUNDLE_DIR) dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+	mkdir -p $(BUILD_DIR)/tmp
+	mv $(CHART_BUNDLE) $(BUILD_DIR)/tmp/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
+	tar cvzf $(CHART_BUNDLE) NOTICES.txt -C $(BUILD_DIR)/tmp dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(CHART_BUNDLE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Chart Bundle to $(CHART_BUNDLE_URL)"
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(REPO_ARCHIVE_FILE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	echo "Published Repo Archive File to $(REPO_ARCHIVE_URL)"
-	mv $(IMAGE_TAR_FILE) $(TMP_BUNDLE_DIR)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
-	tar cvf $(IMAGE_TAR_FILE) NOTICES.txt -C $(TMP_BUNDLE_DIR) dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
+	mv $(IMAGE_TAR_FILE) $(BUILD_DIR)/tmp/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
+	tar cvf $(IMAGE_TAR_FILE) NOTICES.txt -C $(BUILD_DIR)/tmp dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(IMAGE_TAR_FILE)  s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-image-bundle-$(CATALOG_APPLICATIONS_VERSION).tar
 	echo "Published Image Bundle to $(IMAGE_BUNDLE_URL)"
 ifeq (,$(findstring dev,$(CATALOG_APPLICATIONS_VERSION)))
