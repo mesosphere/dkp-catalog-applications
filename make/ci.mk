@@ -6,7 +6,7 @@ CI_DOCKER_TAG ?= $(shell (cat $(CI_DOCKERFILE) $(CI_DOCKER_EXTRA_FILES) \
                          | shasum | awk '{ print $$1 }')
 CI_DOCKER_IMG ?= $(GITHUB_ORG)/$(GITHUB_REPOSITORY)-ci:$(CI_DOCKER_TAG)
 
-export GOLANG_VERSION ?= 1.17.0
+export GOLANG_VERSION ?= 1.19.1
 DOCKER_VERSION ?= 20.10.7
 
 .PHONY: dockerauth
