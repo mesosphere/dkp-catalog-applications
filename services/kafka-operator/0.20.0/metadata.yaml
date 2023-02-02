@@ -1,1 +1,1 @@
-k8sVersionSupport: ">=1.19"
+k8sVersionSupport: "1.19 - 1.24.x"
