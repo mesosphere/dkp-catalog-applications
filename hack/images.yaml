@@ -21,3 +21,8 @@ zookeeper-0.2.13:
   - "docker.io/pravega/zookeeper:0.2.13"
   - "docker.io/pravega/zookeeper:0.2.12"
   - "docker.io/lachlanevenson/k8s-kubectl:v1.16.10"
+zookeeper-0.2.14:
+  - "docker.io/mesosphere/zookeeper-operator:0.2.14-d2iq"
+  - "docker.io/pravega/zookeeper:0.2.14"
+  - "docker.io/pravega/zookeeper:0.2.13"
+  - "docker.io/lachlanevenson/k8s-kubectl:v1.23.2"
