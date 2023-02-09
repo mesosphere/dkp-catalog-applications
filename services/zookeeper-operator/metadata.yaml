@@ -1,5 +1,5 @@
 displayName: ZooKeeper Operator
-description: The ZooKeeper operator deploys Zookeeper 3.6.3 clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
+description: The ZooKeeper operator deploys Zookeeper clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
 allowMultipleInstances: false
 category:
   - Data Services
@@ -12,7 +12,7 @@ overview: |-
   # Overview
   ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.
 
-  The ZooKeeper operator deploys Zookeeper 3.6.3 clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
+  The ZooKeeper operator deploys Zookeeper clusters, and uses Zookeeper dynamic reconfiguration to handle node membership.
 
   **Note: Only install the ZooKeeper operator once per workspace.**
 
