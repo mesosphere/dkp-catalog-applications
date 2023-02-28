@@ -3,7 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
   name: mesosphere.github.io-spark-charts
-  namespace: ${workspaceNamespace}
+  namespace: ${releaseNamespace}
   labels:
     kommander.d2iq.io/dkp-airgapped: supported
 spec:
