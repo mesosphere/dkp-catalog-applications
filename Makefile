@@ -37,6 +37,11 @@ include make/tools.mk
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files
 pre-commit: ; $(info $(M) running pre-commit)
+	@echo $(PRE_COMMIT_CONFIG_FILE)
+	@pwd
+	@ls -a
+
+
 ifeq ($(wildcard $(PRE_COMMIT_CONFIG_FILE)),)
 	$(error Cannot find pre-commit config file $(PRE_COMMIT_CONFIG_FILE). Specify the config file via PRE_COMMIT_CONFIG_FILE variable)
 endif
