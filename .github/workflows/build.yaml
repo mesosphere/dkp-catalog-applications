@@ -15,6 +15,8 @@ env:
 
 jobs:
   build:
+    name: Start build
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
     runs-on:
       - self-hosted
       - small
