@@ -1,7 +1,7 @@
 name: Push CI Docker image
 on:
   pull_request:
-    types: [opened, reopened, synchronize, la]
+    types: [opened, reopened, synchronize, labeled]
   push:
     branches:
       - 'main'
