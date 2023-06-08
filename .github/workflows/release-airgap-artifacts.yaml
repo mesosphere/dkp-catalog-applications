@@ -15,7 +15,7 @@ env:
 
 jobs:
   release-airgap-artifacts:
-    name: Start release
+    name: Start airgap release
     runs-on:
       - self-hosted
       - medium
