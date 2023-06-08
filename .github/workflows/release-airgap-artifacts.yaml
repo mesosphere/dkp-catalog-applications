@@ -18,7 +18,7 @@ jobs:
     name: Start release
     runs-on:
       - self-hosted
-      - small
+      - medium
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
