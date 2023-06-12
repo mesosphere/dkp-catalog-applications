@@ -48,6 +48,7 @@ ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 	$(info CATALOG_APPLICATIONS_VERSION should be set to the version which is part of the s3 file path)
 else
 	mkdir -p $(BUILD_DIR)/tmp
+	@ls -la $(BUILD_DIR)/tmp
 	mv $(CHART_BUNDLE) $(BUILD_DIR)/tmp/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	tar cvzf $(CHART_BUNDLE) NOTICES.txt -C $(BUILD_DIR)/tmp dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
 	aws s3 cp --no-progress --acl bucket-owner-full-control $(CHART_BUNDLE) s3://$(RELEASE_S3_BUCKET)/dkp/$(CATALOG_APPLICATIONS_VERSION)/dkp-catalog-applications-charts-bundle-$(CATALOG_APPLICATIONS_VERSION).tar.gz
