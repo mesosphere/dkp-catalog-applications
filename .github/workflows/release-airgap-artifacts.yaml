@@ -30,6 +30,12 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dkp-catalog-applications
           aws-region: us-west-2
+      
+      - name: Login to Docker Hub and Nexus
+        uses: mesosphere/workflow-db/actions/docker/login@main
+        with:
+          username: ${{ secrets.NEXUS_USERNAME }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
 
       - name: make release.chart-bundle
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
