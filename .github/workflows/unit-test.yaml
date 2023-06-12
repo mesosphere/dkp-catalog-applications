@@ -1,0 +1,28 @@
+name: Unit test
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+  push:
+    branches:
+      - 'main'
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  GITHUB_USER_TOKEN: "${{ secrets.MERGEBOT_TOKEN }}"
+  DOCKER_USERNAME: "${{ secrets.DOCKER_READ_WRITE_USERNAME }}"
+  DOCKER_PASSWORD: "${{ secrets.DOCKER_READ_WRITE_PASSWORD }}"
+
+jobs:
+  unit-test:
+    name: Start unit-test
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
+    runs-on:
+      - self-hosted
+      - small
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: make unit test
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make test"

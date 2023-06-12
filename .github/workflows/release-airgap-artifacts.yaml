@@ -1,0 +1,47 @@
+name: Release airgap artifacts
+on:
+  push:
+    branches:
+      - 'v*'
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release-airgap-artifacts:
+    name: Start airgap release
+    runs-on:
+      - self-hosted
+      - medium
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dkp-catalog-applications
+          aws-region: us-west-2
+
+      - name: make release.chart-bundle
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
+
+      - name: make release.repo-archive
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ steps.extract_branch.outputs.branch }}"
+
+      - name: make release.save-images
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
+
+      - name: make release.s3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ steps.extract_branch.outputs.branch }}"
