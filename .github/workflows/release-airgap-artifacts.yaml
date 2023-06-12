@@ -38,4 +38,4 @@ jobs:
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
 
       - name: make release.s3
-        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ github.ref }}"
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ github.ref.name }}"

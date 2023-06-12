@@ -1,4 +1,4 @@
-BUILD_DIR := $(CURDIR)/_build
+BUILD_DIR := _build
 IMAGE_TAR_FILE := $(BUILD_DIR)/dkp-catalog-applications-image-bundle.tar
 REPO_ARCHIVE_FILE := $(BUILD_DIR)/dkp-catalog-applications.tar.gz
 CHART_BUNDLE := $(BUILD_DIR)/dkp-catalog-applications-chart-bundle.tar.gz
