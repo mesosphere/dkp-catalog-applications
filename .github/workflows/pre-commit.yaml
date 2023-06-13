@@ -16,25 +16,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - uses: webfactory/ssh-agent@v0.7.0
         with:
-          python-version: '3.8'
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.19.1'
-
-      - name: Install GitLint
-        run: pip install gitlint
-
-      - uses: pre-commit/action@v3.0.0
-        with:
-          extra_args: --all-files --show-diff-on-failure --config /runner/_work/dkp-catalog-applications/dkp-catalog-applications/.pre-commit-config.yaml
-        env:
-          SKIP: no-commit-to-branch
-
-      - name: Run gitlint
-        run: git fetch origin main && gitlint --ignore-stdin --commits origin/main..HEAD
+      - name: run pre-commit
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="env SKIP=no-commit-to-branch make pre-commit"
