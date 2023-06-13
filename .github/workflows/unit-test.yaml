@@ -8,11 +8,6 @@ on:
       - 'v*'
   workflow_dispatch:
 
-env:
-  GITHUB_USER_TOKEN: "${{ secrets.MERGEBOT_TOKEN }}"
-  DOCKER_USERNAME: "${{ secrets.DOCKER_READ_WRITE_USERNAME }}"
-  DOCKER_PASSWORD: "${{ secrets.DOCKER_READ_WRITE_PASSWORD }}"
-
 jobs:
   unit-test:
     name: Start unit-test
