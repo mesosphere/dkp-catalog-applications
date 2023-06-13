@@ -8,6 +8,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
+env:
+  DOCKER_USERNAME: "${{ secrets.DOCKER_READ_WRITE_USERNAME }}"
+  DOCKER_PASSWORD: "${{ secrets.DOCKER_READ_WRITE_PASSWORD }}"
+
 jobs:
   push-ci-docker-image:
     name: Start push-ci-docker-image
