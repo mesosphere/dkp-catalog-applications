@@ -1,0 +1,28 @@
+name: Push CI Docker image
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+  push:
+    branches:
+      - 'main'
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  GITHUB_USER_TOKEN: "${{ secrets.MERGEBOT_TOKEN }}"
+  DOCKER_USERNAME: "${{ secrets.DOCKER_READ_WRITE_USERNAME }}"
+  DOCKER_PASSWORD: "${{ secrets.DOCKER_READ_WRITE_PASSWORD }}"
+
+jobs:
+  push-ci-docker-image:
+    name: Start push-ci-docker-image
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
+    runs-on:
+      - self-hosted
+      - small
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: make docker push
+        run: make ci.docker.run RUN_WHAT="make ci.docker.push"

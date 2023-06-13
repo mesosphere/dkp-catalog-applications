@@ -1,0 +1,34 @@
+name: build
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+  push:
+    branches:
+      - 'main'
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  GITHUB_USER_TOKEN: "${{ secrets.MERGEBOT_TOKEN }}"
+  DOCKER_USERNAME: "${{ secrets.DOCKER_READ_WRITE_USERNAME }}"
+  DOCKER_PASSWORD: "${{ secrets.DOCKER_READ_WRITE_PASSWORD }}"
+
+jobs:
+  build:
+    name: Start build
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
+    runs-on:
+      - self-hosted
+      - small
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+
+      - name: make release chart-bundle
+        run: make ci.docker.run RUN_WHAT="make release.chart-bundle"
+
+      - name: make release.save-images
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
