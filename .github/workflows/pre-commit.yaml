@@ -1,14 +1,14 @@
 name: pre-commit
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
-  push:
-    branches:
-      - 'main'
-      - 'v*'
+  workflow_run:
+    workflows: [Push CI Docker image]
+    types:
+      - completed
+
 jobs:
   pre-commit:
     name: Start pre-commit
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'ok-to-test'))  }}
     runs-on:
       - self-hosted
       - small
