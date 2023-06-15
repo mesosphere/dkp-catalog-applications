@@ -11,7 +11,7 @@ on:
 jobs:
   unit-test:
     name: Start unit-test
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
+    if: ${{ github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'ok-to-test') }}
     runs-on:
       - self-hosted
       - small
