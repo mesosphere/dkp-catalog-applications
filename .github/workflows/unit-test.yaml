@@ -1,7 +1,7 @@
 name: Unit test
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize, labeled]
+    types: [opened, reopened, synchronize, labeled]
   push:
     branches:
       - main
