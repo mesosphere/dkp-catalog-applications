@@ -1,12 +1,10 @@
 name: build
 on:
-  workflow_run:
-    workflows: [Push CI Docker image]
-    types:
-      - completed
+  pull_request:
+    types: [opened, reopened, edited, synchronize, labeled]
+  push:
     branches:
-      - '**'
-
+      - main
 
 jobs:
   build:
