@@ -4,6 +4,9 @@ on:
     workflows: [Push CI Docker image]
     types:
       - completed
+    branches:
+      - '**'
+
 
 jobs:
   build:
