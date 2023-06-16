@@ -1,7 +1,7 @@
 name: Release airgap artifacts
 on:
   push:
-    branches:
+    tags:
       - 'v*'
   workflow_dispatch:
 permissions:
