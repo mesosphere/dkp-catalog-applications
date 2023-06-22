@@ -34,7 +34,7 @@ jobs:
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
 
       - name: make release.repo-archive
-        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ steps.extract_branch.outputs.branch }}"
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
 
       - name: make release.save-images
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
