@@ -43,3 +43,4 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
+
