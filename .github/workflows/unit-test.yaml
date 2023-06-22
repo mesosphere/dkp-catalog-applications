@@ -20,12 +20,5 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
-
-      - name: Login to Docker Hub and Nexus
-        uses: mesosphere/workflow-db/actions/docker/login@main
-        with:
-          username: ${{ secrets.NEXUS_USERNAME }}
-          password: ${{ secrets.NEXUS_PASSWORD }}
-
       - name: make unit test
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make test"
