@@ -1,0 +1,45 @@
+name: Release airgap artifacts
+on:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  release-airgap-artifacts:
+    name: Start airgap release
+    runs-on:
+      - self-hosted
+      - medium
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+
+      - name: Extract tag name
+        shell: bash
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/dkp-catalog-applications
+          aws-region: us-west-2
+
+      - name: make release.chart-bundle
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
+
+      - name: make release.repo-archive
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
+
+      - name: make release.save-images
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
+
+      - name: make release.s3
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
