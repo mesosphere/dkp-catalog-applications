@@ -28,4 +28,3 @@ curl -v -f -X POST \
   -H "Authorization: Bearer $CVE_REPORTER_API_KEY" \
   -d @"$IMAGES_JSON_PATH" \
   "$CVE_REPORTER_URL/api/v1/import/konvoy/images_json?name=$CVE_REPORTER_PROJECT_NAME&version=$CVE_REPORTER_PROJECT_VERSION&overwrite=true"
-
