@@ -5,4 +5,9 @@ metadata:
   name: zookeeper-operator-0.2.15-d2iq-defaults
   namespace: ${releaseNamespace}
 data:
-  values.yaml: ""
+  values.yaml: |
+    ---
+    hooks:
+      image:
+        repository: lachlanevenson/k8s-kubectl
+        tag: v1.25.4
