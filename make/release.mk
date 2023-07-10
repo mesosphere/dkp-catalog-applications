@@ -16,7 +16,7 @@ $(BUILD_DIR):
 release.save-images.tar: $(GOJQ_BIN) $(MINDTHEGAP_BIN) $(BUILD_DIR)
 release.save-images.tar:
 	$(call print-target)
-	@$(GOJQ_BIN) -r --yaml-input '.|flatten|sort|.[]' hack/images.yaml > $(CATALOG_IMAGES_TXT)
+	@$(GOJQ_BIN) -r --yaml-input '.|flatten|sort|unique|.[]' hack/images.yaml > $(CATALOG_IMAGES_TXT)
 	@$(MINDTHEGAP_BIN) create image-bundle --platform linux/amd64 --images-file $(CATALOG_IMAGES_TXT) --output-file $(IMAGE_TAR_FILE)
 	@ls -latrh $(IMAGE_TAR_FILE)
 
