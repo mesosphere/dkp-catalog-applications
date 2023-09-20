@@ -13,6 +13,11 @@ jobs:
     runs-on:
       - self-hosted
       - medium
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_READ_WRITE_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_READ_WRITE_PASSWORD }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
