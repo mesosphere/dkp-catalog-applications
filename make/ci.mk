@@ -2,9 +2,9 @@ CI_DOCKERFILE ?= $(REPO_ROOT)/Dockerfile.ci
 
 ifneq ($(wildcard $(CI_DOCKERFILE)),)
 CI_DOCKER_TAG ?= $(shell (cat $(CI_DOCKERFILE) $(CI_DOCKER_EXTRA_FILES) \
-                         $(if $(CI_DOCKER_BUILD_ARGS),&& echo $(CI_DOCKER_BUILD_ARGS))) \
-                         | shasum | awk '{ print $$1 }')
-CI_DOCKER_IMG ?= $(GITHUB_ORG)/$(GITHUB_REPOSITORY)-ci:$(CI_DOCKER_TAG)
+						 $(if $(CI_DOCKER_BUILD_ARGS),&& echo $(CI_DOCKER_BUILD_ARGS))) \
+						 | shasum | awk '{ print $$1 }')
+CI_DOCKER_IMG ?= $(GITHUB_REPOSITORY)-ci:$(CI_DOCKER_TAG)
 
 export GOLANG_VERSION ?= 1.19.1
 DOCKER_VERSION ?= 20.10.7
@@ -46,7 +46,7 @@ ci.docker.run: RUN_WHAT ?=
 ci.docker.run: ci.docker.ensure ; $(info $(M) Runs the build in the CI Docker image)
 	docker run --rm -i$(if $(RUN_WHAT),,$(if $(INTERACTIVE),t)) \
 		-v $(REPO_ROOT):$(REPO_ROOT) \
- 		-w $(REPO_ROOT) \
+		-w $(REPO_ROOT) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /etc/docker/certs.d:/etc/docker/certs.d \
 		$(if $(AWS_REGION),-e AWS_REGION=$(AWS_REGION)) \

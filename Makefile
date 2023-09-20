@@ -5,8 +5,7 @@ REPO_ROOT := $(CURDIR)
 INTERACTIVE := $(shell [ -t 0 ] && echo 1)
 
 export GOPRIVATE ?= github.com/mesosphere
-export GITHUB_ORG ?= mesosphere
-export GITHUB_REPOSITORY ?= dkp-catalog-applications
+export GITHUB_REPOSITORY ?= mesosphere/dkp-catalog-applications
 export GOBIN := $(REPO_ROOT)/bin/$(GOOS)/$(GOARCH)
 export PATH := $(GOBIN):$(PATH)
 GOARCH ?= $(shell go env GOARCH)
