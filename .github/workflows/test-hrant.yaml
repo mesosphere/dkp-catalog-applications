@@ -1,0 +1,30 @@
+name: Test Hrant
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+env:
+  GOPRIVATE: github.com/mesosphere
+  GITHUB_USER_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
+  # GH_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
+
+jobs:
+  kuttl_tests:
+    name: Test Hrant    
+
+    runs-on:
+    - self-hosted
+    - small
+
+    steps:
+
+      - name: Login to Docker Hub and Nexus
+        uses: mesosphere/workflow-db/actions/docker/login@main
+        with:
+          password: ${{ secrets.NEXUS_PASSWORD }}
+          username: ${{ secrets.NEXUS_USERNAME }}
+
+      - name: Pull 
+        run: docker pull hello-world:linux
