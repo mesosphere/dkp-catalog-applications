@@ -8,7 +8,7 @@ on:
 env:
   GOPRIVATE: github.com/mesosphere
   GITHUB_USER_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
-  # GH_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
+  GH_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
 
 jobs:
   kuttl_tests:
