@@ -13,6 +13,7 @@ jobs:
     runs-on:
       - self-hosted
       - medium
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,6 +30,13 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::999867407951:role/dkp-catalog-applications
           aws-region: us-west-2
+
+      - name: Login to Nexus
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.NEXUS_REGISTRY }}
+          username: ${{ secrets.NEXUS_USERNAME }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
 
       - name: make release.chart-bundle
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
