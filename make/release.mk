@@ -21,7 +21,7 @@ release.save-images.tar:
 	@ls -latrh $(IMAGE_TAR_FILE)
 
 .PHONY: cve-reporter.push-images
-cve-reporter.push-images: $(GOJQ_BIN)
+cve-reporter.push-images: $(GOJQ_BIN) $(BUILD_DIR)
 cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
 cve-reporter.push-images:
 	$(call print-target)
