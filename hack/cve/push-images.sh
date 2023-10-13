@@ -10,11 +10,11 @@ set -e
 # The script requires a path to `images.json` file as a first argument.
 #
 # Optionally project name and version can be overriden with environment variables
-#  CVE_REPORTER_PROJECT_NAME=kommander2
+#  CVE_REPORTER_PROJECT_NAME=dkp-catalog-applications
 #  CVE_REPORTER_PROJECT_VERSION=main
 #
 # Example:
-#  CVE_REPORTER_PROJECT_VERSION=2.1.0-rc.1 ./push-images.sh ./path/to/kommander_images.json
+#  CVE_REPORTER_PROJECT_VERSION=2.1.0-rc.1 ./push-images.sh ./path/to/images.json
 
 : "${CVE_REPORTER_API_KEY:?Provide CVE_REPORTER_API_KEY environment variable}"
 IMAGES_JSON_PATH=${1:?Provide path to uploaded images.json file}
