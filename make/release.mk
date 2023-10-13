@@ -22,16 +22,16 @@ release.save-images.tar:
 
 .PHONY: cve-reporter.push-images
 cve-reporter.push-images: $(GOJQ_BIN)
-cve-reporter.push-images: CVE_REPORTER_KOMMANDER_VERSION ?= main
+cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
 cve-reporter.push-images:
 	$(call print-target)
 	$(GOJQ_BIN) -r --yaml-input \
 		--argjson whitelist '$(shell $(GOJQ_BIN) -rc --yaml-input '.' hack/cve/whitelist.yaml)' \
 		'with_entries( select( .key | IN($$whitelist[]) ) ) | flatten | sort | unique' hack/images.yaml > $(CATALOG_IMAGES_TXT)
 	TMP_IMAGES_JSON=$$(mktemp) && \
-	$(GOJQ_BIN) --arg DKP_CATALOG_VERSION $(CVE_REPORTER_KOMMANDER_VERSION) \
+	$(GOJQ_BIN) --arg DKP_CATALOG_VERSION $(CVE_REPORTER_PROJECT_VERSION) \
 		-r -f ./hack/cve/convert-images-json.jq $(CATALOG_IMAGES_TXT) > $$TMP_IMAGES_JSON && \
-	CVE_REPORTER_PROJECT_VERSION=$(CVE_REPORTER_KOMMANDER_VERSION) ./hack/cve/push-images.sh $$TMP_IMAGES_JSON && \
+	CVE_REPORTER_PROJECT_VERSION=$(CVE_REPORTER_PROJECT_VERSION) ./hack/cve/push-images.sh $$TMP_IMAGES_JSON && \
 	rm -f $$TMP_IMAGES_JSON
 
 .PHONY: release.repo-archive
