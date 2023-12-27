@@ -23,7 +23,7 @@ jobs:
         uses: asdf-vm/actions/setup@v2
       - name: Generate image list
         run: |
-          release.whitelisted-images
+          make release.whitelisted-images
           cat ${{ env.IMAGES_TXT_PATH }}
       - name: Run validation
         uses: docker://mesosphere/dkp-licenses-cli:licenses-v0.0.11
