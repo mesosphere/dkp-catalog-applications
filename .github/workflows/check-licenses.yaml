@@ -10,7 +10,9 @@ env:
 
 jobs:
   check-license-yaml:
-    runs-on: ubuntu-latest
+    runs-on:
+    - self-hosted
+    - small
     name: Check licenses.d2iq.yaml
     steps:
       - name: Checkout code
