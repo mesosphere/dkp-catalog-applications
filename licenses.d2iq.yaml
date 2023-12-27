@@ -1,4 +1,4 @@
-resource:
+resources:
   - container_image: docker.io/lachlanevenson/k8s-kubectl:v1.23.2
     sources:
       - url: https://github.com/lachie83/k8s-kubectl
