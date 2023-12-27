@@ -22,6 +22,8 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
       - name: Generate image list
         run: |
           make release.whitelisted-images
