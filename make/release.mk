@@ -32,7 +32,7 @@ release.whitelisted-images:
 
 .PHONY: cve-reporter.push-images
 cve-reporter.push-images: $(GOJQ_BIN)
-cve-reporter.push-images: release.whitelisted-images 
+cve-reporter.push-images: release.whitelisted-images
 cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
 cve-reporter.push-images:
 	$(call print-target)
@@ -48,8 +48,8 @@ ifeq ($(CATALOG_APPLICATIONS_VERSION),"")
 	$(info CATALOG_APPLICATIONS_VERSION should be set to the version which is part of the s3 file path)
 else
 	git archive --format "tar.gz" -o $(REPO_ARCHIVE_FILE) \
-	                              $(CATALOG_APPLICATIONS_VERSION) -- \
-	                              helm-repositories services
+								  $(CATALOG_APPLICATIONS_VERSION) -- \
+								  helm-repositories services
 endif
 
 .PHONY: release.chart-bundle
