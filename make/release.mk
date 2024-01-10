@@ -3,6 +3,7 @@ IMAGE_TAR_FILE := $(BUILD_DIR)/dkp-catalog-applications-image-bundle.tar
 REPO_ARCHIVE_FILE := $(BUILD_DIR)/dkp-catalog-applications.tar.gz
 CHART_BUNDLE := $(BUILD_DIR)/dkp-catalog-applications-chart-bundle.tar.gz
 CATALOG_IMAGES_TXT := $(BUILD_DIR)/dkp_catalog_images.txt
+CATALOG_IMAGES_TXT_WHITELISTED := $(BUILD_DIR)/dkp_catalog_images_whitelisted.txt
 RELEASE_S3_BUCKET ?= downloads.mesosphere.io
 
 CATALOG_APPLICATIONS_VERSION ?= ""
@@ -20,17 +21,24 @@ release.save-images.tar:
 	@$(MINDTHEGAP_BIN) create image-bundle --platform linux/amd64 --images-file $(CATALOG_IMAGES_TXT) --output-file $(IMAGE_TAR_FILE)
 	@ls -latrh $(IMAGE_TAR_FILE)
 
-.PHONY: cve-reporter.push-images
-cve-reporter.push-images: $(GOJQ_BIN) $(BUILD_DIR)
-cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
-cve-reporter.push-images:
+
+.PHONY: release.whitelisted-images
+release.whitelisted-images: $(GOJQ_BIN) $(BUILD_DIR)
+release.whitelisted-images:
 	$(call print-target)
 	$(GOJQ_BIN) -r --yaml-input \
 		--argjson whitelist '$(shell $(GOJQ_BIN) -rc --yaml-input '.' hack/cve/whitelist.yaml)' \
-		'with_entries( select( .key | IN($$whitelist[]) ) ) | flatten | sort | unique' hack/images.yaml > $(CATALOG_IMAGES_TXT)
+		'with_entries( select( .key | IN($$whitelist[]) ) ) | flatten | sort | unique' hack/images.yaml > $(CATALOG_IMAGES_TXT_WHITELISTED)
+
+.PHONY: cve-reporter.push-images
+cve-reporter.push-images: $(GOJQ_BIN)
+cve-reporter.push-images: release.whitelisted-images
+cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
+cve-reporter.push-images:
+	$(call print-target)
 	TMP_IMAGES_JSON=$$(mktemp) && \
 	$(GOJQ_BIN) --arg DKP_CATALOG_VERSION $(CVE_REPORTER_PROJECT_VERSION) \
-		-r -f ./hack/cve/convert-images-json.jq $(CATALOG_IMAGES_TXT) > $$TMP_IMAGES_JSON && \
+		-r -f ./hack/cve/convert-images-json.jq $(CATALOG_IMAGES_TXT_WHITELISTED) > $$TMP_IMAGES_JSON && \
 	CVE_REPORTER_PROJECT_VERSION=$(CVE_REPORTER_PROJECT_VERSION) ./hack/cve/push-images.sh $$TMP_IMAGES_JSON && \
 	rm -f $$TMP_IMAGES_JSON
 

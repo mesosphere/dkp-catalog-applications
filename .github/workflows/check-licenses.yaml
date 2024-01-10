@@ -1,0 +1,36 @@
+name: Check licenses.d2iq.yaml
+on:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch: {}
+
+env:
+  # see release.mk
+  IMAGES_TXT_PATH: _build/dkp_catalog_images_whitelisted.txt
+
+jobs:
+  check-license-yaml:
+    runs-on:
+    - self-hosted
+    - small
+    name: Check licenses.d2iq.yaml
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+      - name: Generate image list
+        run: |
+          make release.whitelisted-images
+          cat ${{ env.IMAGES_TXT_PATH }}
+      - name: Run validation
+        uses: docker://mesosphere/dkp-licenses-cli:licenses-v0.0.11
+        with:
+          args: validate container-images-mapping --input=${{ env.IMAGES_TXT_PATH }} --mapping-file=licenses.d2iq.yaml --check-sources --output-format=github
+        env:
+          GITHUB_TOKEN: "${{ secrets.MESOSPHERECI_USER_TOKEN }}"

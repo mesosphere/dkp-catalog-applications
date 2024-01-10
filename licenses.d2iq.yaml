@@ -1,0 +1,39 @@
+ignore:
+  - docker.io/bitnami/kubectl:1.27.6
+resources:
+  - container_image: ghcr.io/mesosphere/zookeeper-operator:0.2.15-d2iq
+    sources:
+      - url: https://github.com/mesosphere/zookeeper-operator
+        ref: v${image_tag}
+        license_path: LICENSE
+  - container_image: ghcr.io/mesosphere/zookeeper:0.2.15-d2iq
+    sources:
+      - url: https://github.com/mesosphere/zookeeper-operator
+        ref: v${image_tag}
+        license_path: LICENSE
+  - container_image: gcr.io/kubebuilder/kube-rbac-proxy:v0.14.1
+    sources:
+      - url: https://github.com/brancz/kube-rbac-proxy
+        ref: ${image_tag}
+        license_path: LICENSE
+  - container_image: ghcr.io/banzaicloud/cruise-control:2.5.123
+    sources:
+      - url: https://github.com/banzaicloud/docker-cruise-control
+        ref: ${image_tag}
+        license_path: LICENSE
+  - container_image: ghcr.io/banzaicloud/jmx-javaagent:0.16.1
+    sources:
+      - url: https://github.com/banzaicloud/docker-jmx-exporter
+        ref: ${image_tag}
+        license_path: LICENSE
+  - container_image: ghcr.io/banzaicloud/kafka-operator:v0.25.1
+    sources:
+      - url: https://github.com/banzaicloud/koperator
+        ref: ${image_tag}
+        license_path: LICENSE
+        notice_path: NOTICE
+  - container_image: ghcr.io/banzaicloud/kafka:2.13-3.4.1
+    sources:
+      - url: https://github.com/banzaicloud/docker-kafka
+        ref: ${image_tag}
+        license_path: LICENSE
