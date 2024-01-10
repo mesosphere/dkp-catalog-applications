@@ -32,7 +32,7 @@ resources:
         ref: ${image_tag}
         license_path: LICENSE
         notice_path: NOTICE
-  - container_image: ghcr.io/banzaicloud/kafka:2.13-3.1.2
+  - container_image: ghcr.io/banzaicloud/kafka:2.13-3.4.1
     sources:
       - url: https://github.com/banzaicloud/docker-kafka
         ref: ${image_tag}
