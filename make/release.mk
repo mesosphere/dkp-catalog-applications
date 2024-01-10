@@ -32,7 +32,7 @@ release.whitelisted-images:
 
 .PHONY: cve-reporter.push-images
 cve-reporter.push-images: $(GOJQ_BIN)
-cve-reporter.push-images: release.whitelisted-images 
+cve-reporter.push-images: release.whitelisted-images
 cve-reporter.push-images: CVE_REPORTER_PROJECT_VERSION ?= main
 cve-reporter.push-images:
 	$(call print-target)

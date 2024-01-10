@@ -1,15 +1,7 @@
+ignore:
+  - docker.io/bitnami/kubectl:1.27.6
 resources:
-  - container_image: docker.io/lachlanevenson/k8s-kubectl:v1.25.4
-    sources:
-      - url: https://github.com/lachie83/k8s-kubectl
-        ref: ${image_tag}
-        license_path: LICENSE
   - container_image: docker.io/pravega/zookeeper-operator:0.2.15
-    sources:
-      - url: https://github.com/pravega/zookeeper-operator
-        ref: v${image_tag}
-        license_path: LICENSE
-  - container_image: docker.io/pravega/zookeeper:0.2.14
     sources:
       - url: https://github.com/pravega/zookeeper-operator
         ref: v${image_tag}
