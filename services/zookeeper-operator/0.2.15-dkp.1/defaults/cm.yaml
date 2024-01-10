@@ -7,6 +7,9 @@ metadata:
 data:
   values.yaml: |
     ---
+    image:
+      repository: ghcr.io/mesosphere/zookeeper-operator
+      tag: 0.2.15-d2iq
     hooks:
       image:
         repository: bitnami/kubectl
