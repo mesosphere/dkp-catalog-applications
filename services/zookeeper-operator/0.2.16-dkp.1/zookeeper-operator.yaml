@@ -24,5 +24,5 @@ spec:
   releaseName: zookeeper-operator
   valuesFrom:
     - kind: ConfigMap
-      name: zookeeper-operator-0.2.15-dkp.1-d2iq-defaults
+      name: zookeeper-operator-0.2.16-dkp.1-d2iq-defaults
   targetNamespace: ${releaseNamespace}
