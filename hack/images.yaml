@@ -1,15 +1,3 @@
-spark-1.1.6:
-  - "gcr.io/spark-operator/spark-py:v2.4.5"
-  - "gcr.io/spark-operator/spark-py:v3.1.1"
-  - "gcr.io/spark-operator/spark:v2.4.5"
-  - "gcr.io/spark-operator/spark:v3.1.1"
-  - "docker.io/mesosphere/spark-operator:3.1.1-1.1.6"
-spark-1.1.17:
-  - "docker.io/mesosphere/spark-operator:3.1.1-1.1.17"
-  - "gcr.io/spark-operator/spark-py:v2.4.5"
-  - "gcr.io/spark-operator/spark-py:v3.1.1"
-  - "gcr.io/spark-operator/spark:v2.4.5"
-  - "gcr.io/spark-operator/spark:v3.1.1"
 kafka-0.20.0:
   - "ghcr.io/banzaicloud/kafka-operator:v0.20.0"
   - "ghcr.io/banzaicloud/kafka:2.13-2.8.1"
