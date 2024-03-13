@@ -1,4 +1,4 @@
 # List of applications that should be reported to CVE reporter. Apps in this list
 # must match keys in /hack/images.yaml file.
-- zookeeper-0.2.15-dkp.1
+- zookeeper-0.2.16-dkp.2
 - kafka-0.25.1
