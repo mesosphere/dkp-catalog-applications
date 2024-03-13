@@ -1,5 +1,5 @@
 ignore:
-  - docker.io/bitnami/kubectl:1.27.6
+  - docker.io/bitnami/kubectl:1.29.2
 resources:
   - container_image: ghcr.io/mesosphere/zookeeper-operator:0.2.15-d2iq
     sources:
