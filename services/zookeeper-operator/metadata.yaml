@@ -6,6 +6,9 @@ category:
 certifications:
   - certified
   - airgapped
+licensing:
+  - Ultimate
+  - Enterprise
 scope:
   - workspace
 overview: |-
