@@ -1,8 +1,8 @@
 # Converts a list of images collected for airgapped installation into
 # konvoy images.json format that can be submitted into CVE reporter.
-# Running this script requires specifying jq argument `DKP_CATALOG_VERSION`.
+# Running this script requires specifying jq argument `NKP_CATALOG_VERSION`.
 # Example:
-# jq --arg DKP_CATALOG_VERSION v2.1.0 -f .
+# jq --arg NKP_CATALOG_VERSION v2.1.0 -f .
 
 # parse_image converts docker image reference from single line format to
 # structured json object in konvoy images.json format.
@@ -18,7 +18,7 @@ def parse_image(i):
 ;
 
 {
-  konvoyVersion: $DKP_CATALOG_VERSION,
+  konvoyVersion: $NKP_CATALOG_VERSION,
   images: [
     .[] | parse_image(.)
   ],
