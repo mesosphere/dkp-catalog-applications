@@ -31,36 +31,29 @@ jobs:
           aws-region: us-west-2
 
       - name: make release.chart-bundle
-        env:
-          DKP_OR_NKP_PREFIX: nkp
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
 
       - name: make release.chart-bundle (DKP)
-        env:
-          DKP_OR_NKP_PREFIX: dkp
-        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle"
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.chart-bundle DKP_OR_NKP_PREFIX=dkp"
 
       - name: make release.repo-archive
-        env:
-          DKP_OR_NKP_PREFIX: nkp
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
 
       - name: make release.repo-archive (DKP)
-        env:
-          DKP_OR_NKP_PREFIX: dkp
-        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.repo-archive CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }} DKP_OR_NKP_PREFIX=dkp"
 
       - name: make release.save-images
-        env:
-          DKP_OR_NKP_PREFIX: nkp
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
 
       - name: make release.save-images (DKP)
-        env:
-          DKP_OR_NKP_PREFIX: dkp
-        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar"
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.save-images.tar DKP_OR_NKP_PREFIX=dkp"
 
       - name: make release.s3
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }}"
+
+      - name: make release.s3 (DKP)
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: make ci.docker.run GOOS=linux GOARCH=amd64 RUN_WHAT="make release.s3 CATALOG_APPLICATIONS_VERSION=${{ env.RELEASE_VERSION }} DKP_OR_NKP_PREFIX=dkp"
