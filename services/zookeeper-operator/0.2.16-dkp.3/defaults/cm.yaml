@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zookeeper-operator-0.2.16-dkp.3-d2iq-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    image:
+      repository: ghcr.io/mesosphere/zookeeper-operator
+      tag: 0.2.15-d2iq
+    hooks:
+      image:
+        repository: bitnami/kubectl
+        tag: 1.29.6
