@@ -4,7 +4,7 @@ kafka-0.25.1:
   - "ghcr.io/banzaicloud/kafka:2.13-3.4.1"
   - "ghcr.io/banzaicloud/jmx-javaagent:0.16.1"
   - "gcr.io/kubebuilder/kube-rbac-proxy:v0.14.1"
-zookeeper-0.2.16-dkp.2:
+zookeeper-0.2.16-dkp.3:
   - "ghcr.io/mesosphere/zookeeper-operator:0.2.15-d2iq"
   - "ghcr.io/mesosphere/zookeeper:0.2.15-d2iq"
-  - "docker.io/bitnami/kubectl:1.29.2"
+  - "docker.io/bitnami/kubectl:1.29.3"
