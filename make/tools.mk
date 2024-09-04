@@ -32,3 +32,7 @@ kommander-cli:
 	go install golang.org/dl/go1.19@latest
 	go1.19 download
 	CGO_ENABLED=0 go1.19 install github.com/mesosphere/kommander-cli/v2@$(KOMMANDER_CLI_VERSION)
+
+.PHONY: gh-dkp
+gh-dkp: ; $(info $(M) installing $*)
+	gh extensions install mesosphere/gh-dkp || gh dkp -h
