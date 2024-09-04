@@ -33,6 +33,7 @@ include make/ci.mk
 include make/validate.mk
 include make/release.mk
 include make/tools.mk
+include make/repo.mk
 
 .PHONY: pre-commit
 pre-commit: ## Runs pre-commit on all files

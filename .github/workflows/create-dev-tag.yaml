@@ -1,0 +1,74 @@
+name: Create Development Tag
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '5 3 * * *'
+
+env:
+  GOWORK: off
+  GOPRIVATE: github.com/mesosphere
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  generate-matrix:
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    runs-on:
+    - self-hosted
+    - small
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate tag
+        id: set-matrix
+        run: |
+          export GITHUB_REPOSITORY="dkp-catalog-applications"
+          OUT=$(make repo.supported-branches | tail -n 1)
+          echo "matrix=$OUT" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
+
+  create-dev-tag:
+    needs: generate-matrix
+
+    runs-on:
+    - self-hosted
+    - small
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+          depth: 0
+
+      - name: Generate tag
+        run: |
+          # Overriding a variable that causes a conflict in legacy
+          # versions of gh-dkp
+          export GITHUB_REPOSITORY="dkp-catalog-applications"
+          OUT=$(make repo.dev.tag)
+          echo "TAG=$(echo ${OUT##* })" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
+
+      - name: Create tag
+        run: |
+          git config --global user.email "ci-mergebot@d2iq.com"
+          git config --global user.name "ci-mergebot"
+          git tag -m "${{ env.TAG }}" ${{ env.TAG }}
+
+      - name: Push tag
+        run: git push --force --tags origin ${{ env.TAG }}
