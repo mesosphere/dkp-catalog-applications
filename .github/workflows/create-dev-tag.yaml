@@ -27,10 +27,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install GH CLI
+        uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
+
       - name: Generate tag
         id: set-matrix
         run: |
-          export GITHUB_REPOSITORY="dkp-catalog-applications"
           OUT=$(make repo.supported-branches | tail -n 1)
           echo "matrix=$OUT" >> $GITHUB_OUTPUT
         env:
@@ -54,13 +61,31 @@ jobs:
           ref: ${{ matrix.branch }}
           depth: 0
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install GH CLI
+        uses: dev-hanz-ops/install-gh-cli-action@v0.1.0
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_push_gpgsign: false
+
       - name: Generate tag
         run: |
           # Overriding a variable that causes a conflict in legacy
           # versions of gh-dkp
           export GITHUB_REPOSITORY="dkp-catalog-applications"
           OUT=$(make repo.dev.tag)
-          echo "TAG=$(echo ${OUT##* })" >> $GITHUB_ENV
+          TEMP_OUT="${OUT//$'\n'/@@}"
+          echo "TAG=$(echo ${TEMP_OUT##*@@})" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.MESOSPHERECI_USER_TOKEN }}
 
@@ -68,7 +93,7 @@ jobs:
         run: |
           git config --global user.email "ci-mergebot@d2iq.com"
           git config --global user.name "ci-mergebot"
-          git tag -m "${{ env.TAG }}" ${{ env.TAG }}
+          git tag -s -f -m "${{ env.TAG }}" ${{ env.TAG }}
 
       - name: Push tag
         run: git push --force --tags origin ${{ env.TAG }}
