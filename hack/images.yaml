@@ -1,6 +1,6 @@
 kafka-0.25.2:
   - "ghcr.io/banzaicloud/kafka-operator:v0.25.1"
-  - "ghcr.io/banzaicloud/cruise-control:2.5.123"
+  - "ghcr.io/mesosphere/cruise-control:2.5.139"
   - "ghcr.io/mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka:2.13-3.4.1-d2iq.1"
   - "ghcr.io/mesosphere/jmx-javaagent:0.18.0"
   - "gcr.io/kubebuilder/kube-rbac-proxy:v0.14.1"
