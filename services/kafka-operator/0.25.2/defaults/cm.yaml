@@ -16,3 +16,14 @@ data:
         image:
           repository: gcr.io/kubebuilder/kube-rbac-proxy
           tag: v0.14.1
+    # Override cruise control image to address known CVEs.
+    cruise-control:
+      image:
+        repository: ghcr.io/mesosphere/cruise-control
+        tag: 2.5.139
+    # Override kafka image to address CVEs.
+    kafka:
+      image:
+        registry: ghcr.io
+        repoistory: mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka
+        tag: 2.13-3.4.1-d2iq.1
