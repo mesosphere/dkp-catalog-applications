@@ -24,6 +24,9 @@ data:
     # Override kafka image to address CVEs.
     kafka:
       image:
-        registry: ghcr.io
-        repoistory: mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka
+        repoistory: ghcr.io/mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka
         tag: 2.13-3.4.1-d2iq.1
+    jmx-javaagent:
+      image:
+        repository: ghcr.io/mesosphere/jmx-javaagent
+        tag: 0.18.0
