@@ -16,8 +16,4 @@ data:
         image:
           repository: gcr.io/kubebuilder/kube-rbac-proxy
           tag: v0.14.1
-    # Override kafka image to address CVEs.
-    kafka:
-      image:
-        repoistory: ghcr.io/mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka
-        tag: 2.13-3.4.1-d2iq.1
+
