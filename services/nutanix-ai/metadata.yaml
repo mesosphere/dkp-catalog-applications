@@ -11,6 +11,8 @@ certifications:
 licensing:
   - Ultimate
   - Enterprise
+  - Pro
+  - Essential
 requiredDependencies:
   - cert-manager
   - istio
