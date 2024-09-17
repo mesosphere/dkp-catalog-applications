@@ -2,7 +2,7 @@ displayName: Nutanix AI
 description: NAI core components.
 allowMultipleInstances: false
 category:
-  - Data Services
+  - Artificial Intelligence
 certifications:
   - certified
   - airgapped
