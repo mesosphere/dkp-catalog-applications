@@ -1,5 +1,6 @@
 displayName: Nutanix AI
 description: NAI core components.
+type: catalog
 allowMultipleInstances: false
 category:
   - Artificial Intelligence
