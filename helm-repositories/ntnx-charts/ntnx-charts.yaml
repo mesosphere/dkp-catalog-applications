@@ -9,3 +9,4 @@ metadata:
 spec:
   url: "${helmMirrorURL:=https://nutanix.github.io/helm-releases}"
   interval: 10m
+  
