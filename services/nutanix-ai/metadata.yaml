@@ -11,6 +11,12 @@ certifications:
 licensing:
   - Ultimate
   - Enterprise
+requiredDependencies:
+  - cert-manager
+  - istio
+  - knative
+  - kube-prometheus-stack
+  - nvidia-gpu-operator
 scope:
   - workspace
 overview: |-
