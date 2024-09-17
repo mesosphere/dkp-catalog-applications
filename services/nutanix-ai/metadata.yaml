@@ -1,0 +1,21 @@
+displayName: Nutanix AI
+description: NAI core components.
+allowMultipleInstances: false
+category:
+  - Data Services
+certifications:
+  - certified
+  - airgapped
+licensing:
+  - Ultimate
+  - Enterprise
+scope:
+  - workspace
+overview: |-
+  # Overview
+  NAI core components
+
+  **Note: Only install the Nutanix AI once per workspace.**
+
+  ## More Information
+  - [Nutanix AI Documentation](https://github.com/nutanix-core/nai-helm-charts)
