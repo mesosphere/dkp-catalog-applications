@@ -21,7 +21,7 @@ resources:
         license_path: LICENSE
   - container_image: ghcr.io/mesosphere/jmx-javaagent:0.18.0
     sources:
-      - url: https://github.com/banzaicloud/docker-jmx-exporter
+      - url: https://github.com/mesosphere/docker-jmx-exporter
         ref: ${image_tag}
         license_path: LICENSE
   - container_image: ghcr.io/banzaicloud/kafka-operator:v0.25.1
