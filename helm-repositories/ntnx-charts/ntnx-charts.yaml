@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: nutanix.github.io/helm-releases
+  name: nutanix.github.io-helm-releases
   namespace: ${workspaceNamespace}
   labels:
     kommander.d2iq.io/dkp-airgapped: supported
