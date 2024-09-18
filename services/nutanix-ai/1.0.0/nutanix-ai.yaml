@@ -10,7 +10,7 @@ spec:
       chart: nai-core
       sourceRef:
         kind: HelmRepository
-        name: nutanix.github.io/helm-releases
+        name: nutanix.github.io-helm-releases
         namespace: ${workspaceNamespace}
       version: 1.0.0-rc1
   interval: 15s
