@@ -16,7 +16,7 @@ resources:
         license_path: LICENSE
   - container_image: ghcr.io/mesosphere/cruise-control:2.5.139
     sources:
-      - url: https://github.com/banzaicloud/docker-cruise-control
+      - url: https://github.com/mesosphere/docker-cruise-control
         ref: ${image_tag}
         license_path: LICENSE
   - container_image: ghcr.io/mesosphere/jmx-javaagent:0.18.0
