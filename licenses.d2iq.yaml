@@ -14,14 +14,14 @@ resources:
       - url: https://github.com/brancz/kube-rbac-proxy
         ref: ${image_tag}
         license_path: LICENSE
-  - container_image: ghcr.io/banzaicloud/cruise-control:2.5.123
+  - container_image: ghcr.io/mesosphere/cruise-control:2.5.139
     sources:
-      - url: https://github.com/banzaicloud/docker-cruise-control
+      - url: https://github.com/mesosphere/docker-cruise-control
         ref: ${image_tag}
         license_path: LICENSE
-  - container_image: ghcr.io/banzaicloud/jmx-javaagent:0.16.1
+  - container_image: ghcr.io/mesosphere/jmx-javaagent:0.18.0
     sources:
-      - url: https://github.com/banzaicloud/docker-jmx-exporter
+      - url: https://github.com/mesosphere/docker-jmx-exporter
         ref: ${image_tag}
         license_path: LICENSE
   - container_image: ghcr.io/banzaicloud/kafka-operator:v0.25.1
@@ -30,10 +30,10 @@ resources:
         ref: ${image_tag}
         license_path: LICENSE
         notice_path: NOTICE
-  - container_image: ghcr.io/banzaicloud/kafka:2.13-3.4.1
+  - container_image: ghcr.io/mesosphere/dkp-container-images/ghcr.io/banzaicloud/kafka:2.13-3.4.1-d2iq.1
     sources:
       - url: https://github.com/banzaicloud/docker-kafka
-        ref: ${image_tag}
+        ref: ${image_tag%-d2iq.1}
         license_path: LICENSE
   - container_image: docker.io/bitnami/kubectl:1.29.6
     sources:
