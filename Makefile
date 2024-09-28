@@ -14,7 +14,7 @@ GOOS ?= $(shell go env GOOS)
 
 MINDTHEGAP_VERSION ?= v0.13.1
 GOJQ_VERSION ?= v0.12.4
-KOMMANDER_CLI_VERSION ?= main
+KOMMANDER_CLI_VERSION ?= v2.12.1-rc.2
 export GOJQ_BIN = bin/$(GOOS)/$(GOARCH)/gojq-$(GOJQ_VERSION)
 export MINDTHEGAP_BIN = bin/$(GOOS)/$(GOARCH)/mindthegap
 export KOMMANDER_CLI_BIN = bin/kommander-cli
