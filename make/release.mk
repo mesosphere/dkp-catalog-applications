@@ -57,8 +57,10 @@ endif
 release.chart-bundle: kommander-cli
 	$(call print-target)
 	echo "Building charts bundle from nkp-catalog-applications repository: "
+	# skip kafka-operator charts for unsupported versions
 	$(KOMMANDER_CLI_BIN) create chart-bundle \
 		--catalog-repository $(REPO_ROOT) \
+		--skip-charts kafka-operator:0.20.0,kafka-operator:0.20.2,kafka-operator:0.23.0-dev.0 \
 		--output $(CHART_BUNDLE)
 
 .PHONY: release.s3
