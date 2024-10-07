@@ -7,5 +7,5 @@ metadata:
   labels:
     kommander.d2iq.io/dkp-airgapped: supported
 spec:
-  url: "${helmMirrorURL:=https://kubernetes-charts.banzaicloud.com}"
+  url: "${helmMirrorURL:=https://mesosphere.github.io/charts/stable}"
   interval: 10m
