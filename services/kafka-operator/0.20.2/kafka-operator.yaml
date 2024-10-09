@@ -10,7 +10,7 @@ spec:
       chart: kafka-operator
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-charts.banzaicloud.com
+        name: kubernetes-charts.banzaicloud.com-mirror
         namespace: ${workspaceNamespace}
       version: 0.20.2
   interval: 15s
