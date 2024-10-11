@@ -8,8 +8,8 @@ k8s_versions:
 
 # paths to load (in that order)
 paths:
-  - services/zookeeper-operator
-  - services/kafka-operator/0.25.1
+  - helm-repositories
+  - services
 
 # use strict validation (reject unknown fields in resources)
 strict: true
