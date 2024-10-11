@@ -29,6 +29,4 @@ $(GOJQ_BIN):
 .PHONY: kommander-cli
 kommander-cli:
 	$(call print-target)
-	go install golang.org/dl/go1.19@latest
-	go1.19 download
-	CGO_ENABLED=0 go1.19 install github.com/mesosphere/kommander-cli/v2@$(KOMMANDER_CLI_VERSION)
+	CGO_ENABLED=0 go install github.com/mesosphere/kommander-cli/v2@$(KOMMANDER_CLI_VERSION)
