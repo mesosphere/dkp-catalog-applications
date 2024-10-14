@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-operator-0.25.3-d2iq-defaults
+  namespace: ${releaseNamespace}
+data:
+  values.yaml: |
+    ---
+    certManager:
+      enabled: true
+    crd:
+      enabled: true
+    prometheusMetrics:
+      authProxy:
+        image:
+          repository: quay.io/brancz/kube-rbac-proxy
+          tag: v0.18.1
