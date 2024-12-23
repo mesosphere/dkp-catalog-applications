@@ -55,4 +55,3 @@ repos:
       stages: [commit]
       args: ["-e", "SC2211"]
       exclude: \.envrc$  # Exclude .envrc files from shellcheck
-
