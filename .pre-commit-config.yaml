@@ -47,9 +47,11 @@ repos:
   hooks:
   - id: script-must-have-extension
     stages: [commit]
+    exclude: \.envrc$
 - repo: https://github.com/shellcheck-py/shellcheck-py
   rev: v0.7.2.1
   hooks:
   - id: shellcheck
     stages: [commit]
     args: ["-e", "SC2211"]
+    exclude: \.envrc$
