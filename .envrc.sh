@@ -1,3 +1,4 @@
+#!/bin/bash
 use asdf
 PATH_add .local/bin
 
