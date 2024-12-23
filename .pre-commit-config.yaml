@@ -43,14 +43,16 @@ repos:
   - id: gitlint
     stages: [commit-msg]
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: v3.0.0
+  rev: v3.0.0  
   hooks:
     - id: script-must-have-extension
       stages: [commit]
-      files: ^(?!.*\.envrc$).*$
+      exclude: \.envrc$  # Exclude .envrc files from this check
 - repo: https://github.com/shellcheck-py/shellcheck-py
-  rev: v0.7.2.1
+  rev: v0.8.0  
   hooks:
-  - id: shellcheck
-    stages: [commit]
-    args: ["-e", "SC2211"]
+    - id: shellcheck
+      stages: [commit]
+      args: ["-e", "SC2211"]
+      exclude: \.envrc$  # Exclude .envrc files from shellcheck
+
