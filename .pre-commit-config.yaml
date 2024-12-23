@@ -55,4 +55,4 @@ repos:
     - id: shellcheck
       stages: [commit]
       args: ["-e", "SC2211"]  # Disable warnings about undefined shell
-      files: \.(sh|bash)$  # Only apply the hook to shell scripts
+      exclude: \.envrc$  # Only apply the hook to shell scripts
