@@ -43,10 +43,11 @@ repos:
   - id: gitlint
     stages: [commit-msg]
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: 2.1.5
+  rev: v3.0.0
   hooks:
-  - id: script-must-have-extension
-    stages: [commit]
+    - id: script-must-have-extension
+      stages: [commit]
+      files: ^(?!.*\.envrc$).*$
 - repo: https://github.com/shellcheck-py/shellcheck-py
   rev: v0.7.2.1
   hooks:
