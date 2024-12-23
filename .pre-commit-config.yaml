@@ -45,12 +45,14 @@ repos:
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
   rev: 2.1.5
   hooks:
-  - id: script-must-have-extension
-    stages: [commit]
-    args: ["--exclude", ".envrc"]
+    - id: script-must-have-extension
+      stages: [commit]
+      args: []  # Avoids the need to modify this specific hook further
+
 - repo: https://github.com/shellcheck-py/shellcheck-py
   rev: v0.7.2.1
   hooks:
-  - id: shellcheck
-    stages: [commit]
-    args: ["-e", "SC2211", "--exclude", ".envrc"]
+    - id: shellcheck
+      stages: [commit]
+      args: ["-e", "SC2211"]  # Disable warnings about undefined shell
+      files: \.(sh|bash)$  # Only apply the hook to shell scripts
