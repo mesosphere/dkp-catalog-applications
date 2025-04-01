@@ -91,20 +91,6 @@ jobs:
 
       - name: Create tag
         run: |
-          # remove prefix and suffix alphabets
-          TAG_VERSION=$(echo "$TAG" | sed 's/^v//;s/-.*//')
-
-          MAJOR=$(echo "$TAG_VERSION" | cut -d'.' -f1)
-          MINOR=$(echo "$TAG_VERSION" | cut -d'.' -f2)
-
-          echo "Major Version: $MAJOR"
-          echo "Minor Version: $MINOR"
-
-          if [ "$MAJOR" -gt 2 ] || { [ "$MAJOR" -eq 2 ] && [ "$MINOR" -ge 15 ]; }; then
-            echo "It's depricated for v2.15 and above"
-            exit 1
-          fi
-
           git config --global user.email "ci-mergebot@d2iq.com"
           git config --global user.name "ci-mergebot"
           git tag -s -f -m "${{ env.TAG }}" ${{ env.TAG }}
