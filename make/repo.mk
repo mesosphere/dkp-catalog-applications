@@ -5,4 +5,4 @@ repo.dev.tag: gh-dkp
 
 .PHONY: repo.supported-branches
 repo.supported-branches: gh-dkp
-	gh dkp generate dev-versions --json | jq --raw-output --compact-output "[.releases[] | .branch_name]"
+	gh dkp generate dev-versions --exclude ">2.14" --json | jq --raw-output --compact-output "[.releases[] | .branch_name]"
