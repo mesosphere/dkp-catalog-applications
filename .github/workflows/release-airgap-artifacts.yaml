@@ -2,9 +2,7 @@ name: Release airgap artifacts
 on:
   push:
     tags:
-      - 'v[0-1]*'
-      - 'v2.[0-9].*'
-      - 'v2.1[0-4].*'
+      - 'v*'
 permissions:
   contents: read
   id-token: write
